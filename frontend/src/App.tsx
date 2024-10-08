@@ -11,6 +11,11 @@ const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({ element }) =>
   return user ? element : <Navigate to="/signin" replace />
 }
 
+const PublicRoute: React.FC<{ element: React.ReactElement }> = ({ element }) => {
+  const { user } = useAuth()
+  return user ? <Navigate to="/" replace /> : element
+}
+
 const App: React.FC = () => {
   return (
     <AuthProvider>
@@ -18,8 +23,8 @@ const App: React.FC = () => {
         <div className="w-screen min-h-screen bg-gray-100 items-center">
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/signin" element={<SignInUp mode="signin" />} />
-            <Route path="/signup" element={<SignInUp mode="signup" />} />
+            <Route path="/signin" element={<PublicRoute element={<SignInUp mode="signin" />} />} />
+            <Route path="/signup" element={<PublicRoute element={<SignInUp mode="signup" />} />} />
             <Route path="/game" element={<PrivateRoute element={<CrypticFinds />} />} />
             <Route path="/leaderboard" element={<PrivateRoute element={<Leaderboard />} />} />
           </Routes>

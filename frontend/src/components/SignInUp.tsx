@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { useAuth } from './AuthContext'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { cn } from '@/lib/utils'
 
 interface SignInUpProps {
   mode: 'signin' | 'signup'
@@ -31,7 +30,7 @@ const SignInUp: React.FC<SignInUpProps> = ({ mode }) => {
       success = await signUp(username, email, phoneNumber, password)
     }
     if (success) {
-      navigate('/') // Changed from '/game' to '/'
+      navigate('/') // This will now redirect to the HomePage
     } else {
       setError(isSignIn ? 'Invalid credentials' : 'Signup failed. Please try again.')
     }
