@@ -27,7 +27,7 @@ const Leaderboard: React.FC = () => {
   }, [])
 
   return (
-    <Card className={cn('w-full max-w-md')}>
+    <Card className={cn('absolute top-[30%] right-[40%] max-w-md w-full')}>
       <CardHeader>
         <CardTitle className="text-2xl">Global Leaderboard</CardTitle>
         <CardDescription>Top scores from all players</CardDescription>

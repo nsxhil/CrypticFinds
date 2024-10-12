@@ -6,6 +6,8 @@ import { Progress } from "@/components/ui/progress"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
+import { Link } from 'react-router-dom'
+// import Leaderboard from './Leaderboard'
 
 interface Question {
   id: number
@@ -88,9 +90,11 @@ const CrypticFinds: React.FC = () => {
             <CardContent>
               <p className="text-center">Are you ready to embark on a mysterious journey, {user?.username}?</p>
             </CardContent>
-            <CardFooter className="flex justify-center">
+            <CardFooter className="flex justify-center gap-5">
               <Button onClick={startGame}>Start Adventure</Button>
-              
+              <Link to='/leaderboard'>
+              <Button >Leaderboard</Button>
+              </Link>
             </CardFooter>
           </Card>
         )

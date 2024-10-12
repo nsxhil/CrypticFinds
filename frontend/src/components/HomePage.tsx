@@ -77,8 +77,8 @@ const HomePage: React.FC = () => {
             <h1 className="text-gray-300 font-bold text-sm md:text-md lg:text-lg px-2">
               Welcome to
             </h1>
-            <h1 className="text-orange-400 text-2xl md:text-4xl lg:text-5xl my-8 font-bold">
-              CRYPTIC <span className="text-[#1fd1ff]">FINDS</span>
+            <h1 className="text-sky-400 text-2xl md:text-4xl lg:text-5xl my-8 font-bold">
+              CRYPTIC <span className="text-orange-400 ">FINDS</span>
             </h1>
 
             {/* Button with hover effect */}

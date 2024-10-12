@@ -78,7 +78,7 @@ const Navbar: React.FC = ({...props}) => {
     getName();
   }, [user]);
 
-  console.log(user);
+
   return (
     <nav
       className={`${navbarClass.backgroundColor} fixed w-full z-30 top-0 start-0 transition-all duration-300 ${navbarClass.padding}`}
