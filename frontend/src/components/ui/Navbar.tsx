@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch, FaTimes } from "react-icons/fa";
+// import { FaSearch, FaTimes } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 
@@ -9,7 +9,7 @@ interface NavbarClass {
   textColor: string;
 }
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC = ({...props}) => {
   const [navbarClass, setNavbarClass] = useState<NavbarClass>({
     backgroundColor: "bg-transparent",
     padding: "py-6",
@@ -29,6 +29,8 @@ const Navbar: React.FC = () => {
   const toggleAccountMenu = () => {
     setShowAccountMenu(!showAccountMenu);
   };
+
+  
 
   useEffect(() => {
     // Scroll animation logic from the first navbar
@@ -90,23 +92,25 @@ const Navbar: React.FC = () => {
           </h1>
         </Link>
 
+
         <div className="flex items-center">
+        <div className="text-white px-2 hover:text-[#1fd1ff]" onClick={props.scrollTo}> About Us </div>
           {user ? (
             <>
               <div className="relative">
                 <button
-                  className={`${navbarClass.textColor} mx-4 cursor-pointer`}
+                  className={`${navbarClass.textColor} mx-4 cursor-pointer hover:text-orange-400`}
                   onClick={toggleAccountMenu}
                 >
                   Account
                 </button>
                 {showAccountMenu && (
                   <div className="absolute bg-gray-800 rounded-lg shadow-md mt-2 py-2 w-48 right-0">
-                    <h1 className="text-white text-xl font-bold px-4 pt-2 pb-5">
-                      {user.username}
+                    <h1 className="text-white text-xl font-bold px-4 pt-2 pb-5 ">
+                    Hi, {user.username}
                     </h1>
                     <Link to="/account">
-                      <p className="text-gray-300 px-4 py-2 hover:bg-gray-700 cursor-pointer">
+                      <p className="text-gray-300 border-t-3 border-orange-400 px-4 py-2 hover:bg-gray-700 cursor-pointer ">
                         Profile
                       </p>
                     </Link>

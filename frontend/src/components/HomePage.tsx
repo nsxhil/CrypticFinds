@@ -3,6 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import { Canvas, useFrame } from "@react-three/fiber";
 import Earth from "../../public/Earth"; // Adjust path as necessary
 import Navbar from "./ui/Navbar";
+
 import { useAuth } from "./AuthContext";
 
 /*const RotatingEarth: React.FC<{ mouseX: number; mouseY: number }> = ({
@@ -26,10 +27,19 @@ import { useAuth } from "./AuthContext";
   );
 };*/
 
+
+
 const HomePage: React.FC = () => {
   const { user } = useAuth();
   const [mouseX, setMouseX] = React.useState(0);
   const [mouseY, setMouseY] = React.useState(0);
+  const aboutRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollOnClick = () : void  => {
+    if(aboutRef.current){
+    aboutRef.current.scrollIntoView({behavior: 'smooth'})
+    }
+  }
 
   if (!user) {
     return <Navigate to="/signin" replace />;
@@ -37,7 +47,7 @@ const HomePage: React.FC = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar scrollTo={scrollOnClick} />
 
       {/* Main container with mouse movement handler */}
       <div
@@ -63,12 +73,12 @@ const HomePage: React.FC = () => {
           <div className="z-10 absolute w-full h-full bg-gradient-to-t from-[#000021]"></div>
 
           {/* Text container */}
-          <div className="z-20 absolute top-[150px] md:top-[190px] w-[90%] md:w-[80%] h-auto mx-[5%] md:mx-[10%] lg:mx-[20%] my-5">
-            <h1 className="text-gray-300 text-sm md:text-md lg:text-lg">
-              default text for overlay
+          <div className="z-20 absolute  md:top-[190px] w-[90%] md:w-[80%] h-auto mx-[5%] md:mx-[10%] lg:mx-[20%]  ">
+            <h1 className="text-gray-300 font-bold text-sm md:text-md lg:text-lg px-2">
+              Welcome to
             </h1>
-            <h1 className="text-white text-2xl md:text-4xl lg:text-5xl my-8 font-bold">
-              CRYPTIC FINDS
+            <h1 className="text-orange-400 text-2xl md:text-4xl lg:text-5xl my-8 font-bold">
+              CRYPTIC <span className="text-[#1fd1ff]">FINDS</span>
             </h1>
 
             {/* Button with hover effect */}
@@ -76,8 +86,8 @@ const HomePage: React.FC = () => {
               <button className="relative group text-white font-bold py-3 md:py-4 px-4 md:px-6 border-none bg-transparent tracking-wide transition-all duration-500">
                 PLAY THE GAME
                 {/* Top left corner */}
-                <span className="absolute top-0 left-0 w-5 h-0.5 bg-[#1fd1ff] transition-all duration-700 group-hover:w-full"></span>
-                <span className="absolute top-0 left-0 w-0.5 h-5 bg-[#1fd1ff] transition-all duration-700 group-hover:h-full"></span>
+                <span className="absolute top-0 left-0 w-5 h-0.5 bg-orange-400 transition-all duration-700 group-hover:w-full"></span>
+                <span className="absolute top-0 left-0 w-0.5 h-5 bg-orange-400 transition-all duration-700 group-hover:h-full"></span>
                 {/* Bottom right corner */}
                 <span className="absolute bottom-0 right-0 w-5 h-0.5 bg-[#1fd1ff] transition-all duration-700 group-hover:w-full"></span>
                 <span className="absolute bottom-0 right-0 w-0.5 h-5 bg-[#1fd1ff] transition-all duration-700 group-hover:h-full"></span>
@@ -97,8 +107,8 @@ const HomePage: React.FC = () => {
         </div>
       </div>
       {/* About Us Section */}
-      <div id="about" className="container mx-auto py-16 bg-[#000021]">
-        <h2 className="text-4xl font-bold text-center mb-6 text-white">
+      <div id="about" className="container mx-auto py-16 bg-[#000021]" ref={aboutRef}>
+        <h2 className="text-4xl font-bold text-center mb-6 text-white" >
           About Us
         </h2>
         <h6 className="text-lg text-white text-center">

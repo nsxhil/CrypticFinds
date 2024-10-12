@@ -80,7 +80,7 @@ const CrypticFinds: React.FC = () => {
     switch (gameState) {
       case 'start':
         return (
-          <Card className="max-w-md  ">
+          <Card className="max-w-md bg-blue-500 ">
             <CardHeader>
               <CardTitle className="text-2xl">Welcome to Cryptic Finds</CardTitle>
               <CardDescription>Solve riddles, uncover the story, earn points!</CardDescription>
@@ -145,8 +145,8 @@ const CrypticFinds: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen w-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 flex flex-col items-center justify-center p-4">
-      <h1 className="text-4xl font-bold text-white mb-8">Cryptic Finds</h1>
+    <div className="min-h-screen w-screen bg-gradient-to-t from-black  to-[#000021] flex flex-col items-center justify-center p-4">
+  
       {renderContent()}
       {gameState === 'playing' && (
         <div className="mt-4 w-full max-w-md">
