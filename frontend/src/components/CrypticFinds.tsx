@@ -82,10 +82,10 @@ const CrypticFinds: React.FC = () => {
     switch (gameState) {
       case 'start':
         return (
-          <Card className="max-w-md bg-blue-500 ">
+          <Card className="max-w-md bg-blue-500 text-center">
             <CardHeader>
               <CardTitle className="text-2xl">Welcome to Cryptic Finds</CardTitle>
-              <CardDescription>Solve riddles, uncover the story, earn points!</CardDescription>
+              <CardDescription className='text-black'> Solve riddles, uncover the story, earn points!</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-center">Are you ready to embark on a mysterious journey, {user?.username}?</p>

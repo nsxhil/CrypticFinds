@@ -50,12 +50,24 @@ router.post('/login', async (req, res) => {
         }
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token, username: user.username }); 
+        res.json({ token, username: user.username, phoneNumber: user.phoneNumber, email: user.email }); 
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
+
+router.post('/getuser', async (req, res) => {
+    const {user} = req.body; 
+    try{
+        const userdata  = await User.findOne({ user });
+        console.log(userdata)
+        res.status(201).json(userdata)
+    } catch(err){
+        console.error("error in getting data", err)
+        res.status(500).json({message:'error in getting userdata', error: error.message})
+    }
+})
 
 // Forgot Password Route
 router.post('/forgot-password', async (req, res) => {

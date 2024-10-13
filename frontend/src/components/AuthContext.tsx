@@ -6,6 +6,8 @@ const API_URL = import.meta.env.VITE_API_URL
 interface User {
   username: string
   highScore: number
+  email: string
+  phoneNumber: string
 }
 
 interface AuthContextType {
@@ -49,9 +51,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signIn = async (username: string, password: string) => {
     try {
       const response = await axios.post(`${API_URL}/api/auth/login`, { username, password })
-      const { token, username: responseUsername } = response.data
+      const { token, username: responseUsername , email: responseEmail , phoneNumber: responsephoneNumber } = response.data
       localStorage.setItem('token', token)
-      const user = { username: responseUsername, highScore: 0 }
+      const user = { username: responseUsername, highScore: 0, email: responseEmail, phoneNumber: responsephoneNumber }
       setUser(user)
       localStorage.setItem('user', JSON.stringify(user))
       return true
@@ -66,7 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const response = await axios.post(`${API_URL}/api/auth/signup`, { username, email, phoneNumber, password })
       const { token } = response.data
       localStorage.setItem('token', token)
-      const user = { username, highScore: 0 }
+      const user = { username, highScore: 0, email, phoneNumber }
       setUser(user)
       localStorage.setItem('user', JSON.stringify(user))
       return true
@@ -95,7 +97,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signUp, signOut, updateHighScore }}>
+    <AuthContext.Provider value={{ user, signIn, signUp, signOut,   updateHighScore }}>
       {children}
     </AuthContext.Provider>
   )

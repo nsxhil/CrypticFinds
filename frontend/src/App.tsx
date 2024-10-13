@@ -10,6 +10,7 @@ import SignInUp from "@/components/SignInUp";
 import CrypticFinds from "./components/CrypticFinds";
 import Leaderboard from "./components/Leaderboard";
 import HomePage from "./components/HomePage";
+import AccountPage from './components/AccountPage'
 
 const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({
   element,
@@ -47,6 +48,10 @@ const App: React.FC = () => {
             <Route
               path="/leaderboard"
               element={<PrivateRoute element={<Leaderboard />} />}
+            />
+            <Route
+              path="/account"
+              element={<PrivateRoute element={<AccountPage />} />}
             />
           </Routes>
         </div>

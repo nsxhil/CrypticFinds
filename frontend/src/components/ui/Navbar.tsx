@@ -26,6 +26,7 @@ const Navbar: React.FC = ({...props}) => {
     navigate("/login");
   };
 
+
   const toggleAccountMenu = () => {
     setShowAccountMenu(!showAccountMenu);
   };
@@ -73,7 +74,7 @@ const Navbar: React.FC = ({...props}) => {
       })
         .then((res) => res.json())
         .then((data) => setName(data))
-        .catch((err) => console.log("Internal Error Occurred"));
+        .catch((err) => console.log("Internal Error Occurred: ", err.message));
     };
     getName();
   }, [user]);
@@ -110,7 +111,7 @@ const Navbar: React.FC = ({...props}) => {
                     Hi, {user.username}
                     </h1>
                     <Link to="/account">
-                      <p className="text-gray-300 border-t-3 border-orange-400 px-4 py-2 hover:bg-gray-700 cursor-pointer ">
+                      <p className=" text-gray-300  px-4 py-2 hover:bg-gray-700 cursor-pointer ">
                         Profile
                       </p>
                     </Link>
