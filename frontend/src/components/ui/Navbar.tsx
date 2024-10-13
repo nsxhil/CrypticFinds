@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 // import { FaSearch, FaTimes } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
+
 
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -24,6 +25,8 @@ const Navbar: React.FC = ({ ...props }) => {
   const [name, setName] = useState([]);
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+
+  const url = useLocation()
 
   const Logout = async () => {
     window.localStorage.setItem("user", "null");
@@ -97,13 +100,23 @@ const Navbar: React.FC = ({ ...props }) => {
         </Link>
 
         <div className="flex items-center">
-          <div
+          {url.pathname == '/' ? (           <div
             className={`${navbarClass.textColor} px-2 hover:text-[#1fd1ff] hover:cursor-pointer transition-all duration-500`}
             onClick={props.scrollTo}
           >
             {" "}
             About Us{" "}
-          </div>
+          </div>) : (<></>) }
+          
+          {/* <div
+            className={`${navbarClass.textColor} px-2 hover:text-[#1fd1ff] hover:cursor-pointer transition-all duration-500`}
+            onClick={props.scrollTo}
+          >
+            {" "}
+            About Us{" "}
+          </div> */}
+
+
           {user ? (
             <>
               <div className="relative">

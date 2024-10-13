@@ -8,4 +8,7 @@ const QuestionSchema = new mongoose.Schema({
     hint: { type: String, required: true },
 });
 
-module.exports = mongoose.model('Questions', QuestionSchema);
+const Questions = mongoose.model('Questions', QuestionSchema);
+const Branch1 = mongoose.model('branch1', QuestionSchema);
+
+module.exports = { Questions, Branch1 };
