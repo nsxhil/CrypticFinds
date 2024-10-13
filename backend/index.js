@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');  
 const authRoutes = require('./routes/auth');
+const Questions = require('./models/Questions');
 require('dotenv').config();
 
 const app = express();
@@ -36,6 +37,20 @@ const interval = 300000;
 
 app.get('/keep-alive', (req, res) => {
     res.status(200).send('Server is alive');
+});
+
+
+app.get('/questions', async (req, res) => {
+    try {
+        const questions = await Questions.find();
+        if (!questions) {
+            return res.status(404).json({ message: 'Questions not found' });
+        }
+        res.status(200).json(questions);
+    } catch (error) {
+        console.error('Error fetching questions:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
 });
 
 

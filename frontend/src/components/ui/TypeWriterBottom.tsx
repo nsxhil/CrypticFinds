@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Typewriter } from "react-simple-typewriter";
 
 interface TypeWriterBottomProps {
-  user: { username: string }; // Define the structure of the user object
+  user: { username: string | undefined }; // Define the structure of the user object
 }
 
 const TypeWriterBottom: React.FC<TypeWriterBottomProps> = ({ user }) => {

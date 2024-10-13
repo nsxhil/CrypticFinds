@@ -10,7 +10,8 @@ import SignInUp from "@/components/SignInUp";
 import CrypticFinds from "./components/CrypticFinds";
 import Leaderboard from "./components/Leaderboard";
 import HomePage from "./components/HomePage";
-import AccountPage from './components/AccountPage'
+import AccountPage from "./components/AccountPage";
+import Chapter1 from "./components/Chapter1";
 
 const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({
   element,
@@ -37,6 +38,7 @@ const App: React.FC = () => {
               path="/signin"
               element={<PublicRoute element={<SignInUp mode="signin" />} />}
             />
+
             <Route
               path="/signup"
               element={<PublicRoute element={<SignInUp mode="signup" />} />}
@@ -44,6 +46,10 @@ const App: React.FC = () => {
             <Route
               path="/game"
               element={<PrivateRoute element={<CrypticFinds />} />}
+            />
+            <Route
+              path="/chapter1"
+              element={<PrivateRoute element={<Chapter1 />} />}
             />
             <Route
               path="/leaderboard"
