@@ -9,7 +9,7 @@ interface NavbarClass {
   textColor: string;
 }
 
-const Navbar: React.FC = ({...props}) => {
+const Navbar: React.FC = ({ ...props }) => {
   const [navbarClass, setNavbarClass] = useState<NavbarClass>({
     backgroundColor: "bg-transparent",
     padding: "py-6",
@@ -26,12 +26,9 @@ const Navbar: React.FC = ({...props}) => {
     navigate("/login");
   };
 
-
   const toggleAccountMenu = () => {
     setShowAccountMenu(!showAccountMenu);
   };
-
-  
 
   useEffect(() => {
     // Scroll animation logic from the first navbar
@@ -79,7 +76,6 @@ const Navbar: React.FC = ({...props}) => {
     getName();
   }, [user]);
 
-
   return (
     <nav
       className={`${navbarClass.backgroundColor} fixed w-full z-30 top-0 start-0 transition-all duration-300 ${navbarClass.padding}`}
@@ -93,14 +89,19 @@ const Navbar: React.FC = ({...props}) => {
           </h1>
         </Link>
 
-
         <div className="flex items-center">
-        <div className="text-white px-2 hover:text-[#1fd1ff]" onClick={props.scrollTo}> About Us </div>
+          <div
+            className={`${navbarClass.textColor} px-2 hover:text-[#1fd1ff] hover:cursor-pointer transition-all duration-500`}
+            onClick={props.scrollTo}
+          >
+            {" "}
+            About Us{" "}
+          </div>
           {user ? (
             <>
               <div className="relative">
                 <button
-                  className={`${navbarClass.textColor} mx-4 cursor-pointer hover:text-orange-400`}
+                  className={`${navbarClass.textColor} mx-4 cursor-pointer hover:text-orange-400 transition-all duration-500`}
                   onClick={toggleAccountMenu}
                 >
                   Account
@@ -108,7 +109,7 @@ const Navbar: React.FC = ({...props}) => {
                 {showAccountMenu && (
                   <div className="absolute bg-gray-800 rounded-lg shadow-md mt-2 py-2 w-48 right-0">
                     <h1 className="text-white text-xl font-bold px-4 pt-2 pb-5 ">
-                    Hi, {user.username}
+                      Hi, {user.username}
                     </h1>
                     <Link to="/account">
                       <p className=" text-gray-300  px-4 py-2 hover:bg-gray-700 cursor-pointer ">

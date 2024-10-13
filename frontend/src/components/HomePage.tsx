@@ -27,19 +27,17 @@ import { useAuth } from "./AuthContext";
   );
 };*/
 
-
-
 const HomePage: React.FC = () => {
   const { user } = useAuth();
   const [mouseX, setMouseX] = React.useState(0);
   const [mouseY, setMouseY] = React.useState(0);
   const aboutRef = useRef<HTMLDivElement | null>(null);
 
-  const scrollOnClick = () : void  => {
-    if(aboutRef.current){
-    aboutRef.current.scrollIntoView({behavior: 'smooth'})
+  const scrollOnClick = (): void => {
+    if (aboutRef.current) {
+      aboutRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }
+  };
 
   if (!user) {
     return <Navigate to="/signin" replace />;
@@ -107,8 +105,12 @@ const HomePage: React.FC = () => {
         </div>
       </div>
       {/* About Us Section */}
-      <div id="about" className="container mx-auto py-16 bg-[#000021]" ref={aboutRef}>
-        <h2 className="text-4xl font-bold text-center mb-6 text-white" >
+      <div
+        id="about"
+        className="container mx-auto py-16 bg-[#000021]"
+        ref={aboutRef}
+      >
+        <h2 className="text-4xl font-bold text-center mb-6 text-white">
           About Us
         </h2>
         <h6 className="text-lg text-white text-center">

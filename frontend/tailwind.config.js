@@ -7,6 +7,22 @@ export default {
   ],
   theme: {
   	extend: {
+		animation: {
+			shake: 'shake 0.3s ease-in-out',
+			fadeIn: 'fadeIn 2s ease-in-out',
+		  },
+		  keyframes: {
+			shake: {
+				'0%, 100%': { transform: 'translateX(0)' },
+				'25%': { transform: 'translateX(-5px)' },
+				'50%': { transform: 'translateX(5px)' },
+				'75%': { transform: 'translateX(-5px)' },
+			  },
+			fadeIn: {
+			  '0%': { opacity: 0 },
+			  '100%': { opacity: 1 },
+			},
+		  },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
