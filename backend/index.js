@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');  
 const authRoutes = require('./routes/auth');
-const Questions = require('./models/Questions');
+const questionRoutes = require('./routes/questionRoutes');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5000;
 
 
 app.use(cors({
@@ -18,7 +18,9 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Use the routes as middleware
 app.use('/api/auth', authRoutes);
+app.use('/api/questions', questionRoutes);
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
@@ -31,33 +33,16 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-const url = `https://cipherguard.onrender.com/`;
-const interval = 300000; 
-
-
+// Keep-alive route
 app.get('/keep-alive', (req, res) => {
     res.status(200).send('Server is alive');
 });
 
-
-app.get('/questions', async (req, res) => {
-    try {
-        const questions = await Questions.find();
-        if (!questions) {
-            return res.status(404).json({ message: 'Questions not found' });
-        }
-        res.status(200).json(questions);
-    } catch (error) {
-        console.error('Error fetching questions:', error);
-        res.status(500).json({ message: 'Server error', error: error.message });
-    }
-});
-
-
+// Keep-alive function
 const keepAliveInterval = 14 * 60 * 1000; // 14 minutes
 
 function keepAlive() {
-    fetch(url + 'keep-alive')
+    fetch(`${process.env.SERVER_URL}/keep-alive`)
         .then(response => console.log('Keep-alive response:', response.status))
         .catch(error => console.error('Keep-alive error:', error));
 }

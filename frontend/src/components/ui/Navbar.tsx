@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 // import { FaSearch, FaTimes } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import axios from "axios";
+
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 interface NavbarClass {
   backgroundColor: string;
@@ -31,19 +35,19 @@ const Navbar: React.FC = ({ ...props }) => {
   };
 
   useEffect(() => {
-    // Scroll animation logic from the first navbar
+    
     const changeNavbarOnScroll = () => {
       if (window.scrollY >= 80) {
         setNavbarClass({
-          backgroundColor: "bg-white dark:bg-black", // Change color after scrolling
+          backgroundColor: "bg-white dark:bg-black", 
           padding: "py-1",
-          textColor: "text-black", // Reduce padding (and thus height) after scrolling
+          textColor: "text-black", 
         });
       } else {
         setNavbarClass({
-          backgroundColor: "bg-transparent", // Default transparent color
+          backgroundColor: "bg-transparent", 
           padding: "py-3",
-          textColor: "text-white", // Default padding for larger height
+          textColor: "text-white", 
         });
       }
     };
@@ -57,23 +61,26 @@ const Navbar: React.FC = ({ ...props }) => {
   }, []);
 
   useEffect(() => {
-    const data = {
-      email: user,
-    };
-
-    const getName = async () => {
-      await fetch("http://localhost:8080/nameFetch", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((res) => res.json())
-        .then((data) => setName(data))
-        .catch((err) => console.log("Internal Error Occurred: ", err.message));
-    };
-    getName();
+    if (user) {
+      const fetchUserData = async () => {
+        try {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            console.error("No token found");
+            return;
+          }
+          const response = await axios.get(`${API_URL}/api/auth/user`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          setName(response.data.username);
+        } catch (err) {
+          console.error("Error fetching user data:", err);
+        }
+      };
+      fetchUserData();
+    }
   }, [user]);
 
   return (

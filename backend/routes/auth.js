@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const User = require('../models/User');
 const sendEmail = require('../utils/sendEmail');
+const auth = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -158,6 +159,20 @@ router.get('/verify', (req, res) => {
     } catch (err) {
         res.status(401).json({ message: 'Token is not valid' });
     }
+});
+
+// Get user data
+router.get('/user', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
 module.exports = router;
