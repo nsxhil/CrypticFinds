@@ -30,7 +30,7 @@ interface Question {
 }
 
 const CrypticFinds: React.FC = () => {
-  const { user, updateHighScore } = useAuth();
+  const { user } = useAuth();
   const [questions, setQuestions] = useState();
   const navigate = useNavigate();
 
@@ -46,7 +46,6 @@ const CrypticFinds: React.FC = () => {
   //   };
   //   fetchData();
   // }, []);
-
 
   const startGame = () => {
     navigate("/chapter1");

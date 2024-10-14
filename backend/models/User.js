@@ -6,9 +6,13 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     phoneNumber: { type: String, required: true },
     password: { type: String, required: true },
+    score: { type: String,default: "0" },
+    questionNo: { type: String, default: "0" },
+    currentState: { type: String,default: "start" },
     resetPasswordToken: String,
     resetPasswordExpires: Date
 });
+
 
 UserSchema.pre('save', async function(next) {
     if (this.isModified('password')) {

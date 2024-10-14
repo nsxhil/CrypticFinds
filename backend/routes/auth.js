@@ -12,6 +12,7 @@ const router = express.Router();
 // const corsOptions = { ... };
 
 // Signup route
+// Signup route
 router.post('/signup', async (req, res) => {
     console.log('Received signup request:', req.body);
     const { username, email, phoneNumber, password } = req.body;
@@ -23,7 +24,18 @@ router.post('/signup', async (req, res) => {
             return res.status(400).json({ message: 'Username or email already exists' });
         }
 
-        user = new User({ username, email, phoneNumber, password });
+        // Create user with default values for score, questionNo, and currentState
+        user = new User({
+            username,
+            email,
+            phoneNumber,
+            password,
+            score: "0", // Ensure these are strings as per your schema or change the schema to use Number
+            questionNo: "0",
+            currentState: "start"
+        });
+        
+        
         await user.save();
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -34,6 +46,7 @@ router.post('/signup', async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
+
 
 // Login route
 router.post('/login', async (req, res) => {
@@ -49,9 +62,9 @@ router.post('/login', async (req, res) => {
         if (!isMatch) {
             return res.status(401).json({ message: 'Invalid username or password' });
         }
-
+        console.log(user)
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token, username: user.username, phoneNumber: user.phoneNumber, email: user.email }); 
+        res.json({ token, username: user.username, phoneNumber: user.phoneNumber, email: user.email ,score:user.score,questionNo:user.questionNo,currentState:user.currentState}); 
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
@@ -69,6 +82,45 @@ router.post('/getuser', async (req, res) => {
         res.status(500).json({message:'error in getting userdata', error: error.message})
     }
 })
+router.get('/getalluser', async (req, res) => {
+    try {
+        // Find all users and select only the `username` and `score` fields
+        const usersData = await User.find({}, 'username score');
+        console.log(usersData);
+        res.status(200).json(usersData);
+    } catch (err) {
+        console.error("Error in getting data", err);
+        res.status(500).json({ message: 'Error in getting userdata', error: err.message });
+    }
+});
+
+router.post('/updateuser', async (req, res) => {
+    const { username, score, questionNo, currentState } = req.body;
+
+    try {
+        // Find the user by username
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Update the user's score, questionNo, and currentState if they are provided
+        if (score !== undefined) user.score = score;
+        if (questionNo !== undefined) user.questionNo = questionNo;
+        if (currentState !== undefined) user.currentState = currentState;
+
+        // Save the updated user document
+        await user.save();
+
+        console.log('Updated user data:', user);
+        res.status(200).json({ message: 'User updated successfully', user });
+    } catch (err) {
+        console.error('Error in updating user data:', err);
+        res.status(500).json({ message: 'Error in updating user data', error: err.message });
+    }
+});
+
 
 // Forgot Password Route
 router.post('/forgot-password', async (req, res) => {
