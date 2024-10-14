@@ -15,7 +15,7 @@ const TypingEffect: React.FC = () => {
 
   return (
     <div className="text-center my-8">
-      <h1 className="text-2xl font-bold">
+      <h1 className="text-2xl text-green-500 font-bold">
         {showTypewriter && (
           <Typewriter
             words={["Welcome to Cryptic Finds"]}

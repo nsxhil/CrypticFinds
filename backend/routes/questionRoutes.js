@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Question, branch1} = require('../models/Questions');
+const {Question, branch1, chapterqs, landqs} = require('../models/Questions');
 
 
 
@@ -20,6 +20,26 @@ router.get('/branch1', async (req, res) => {
   try {
     const questions = await branch1.find().sort({ questionID: 1 });
     console.log('Fetched questions:', questions);
+    res.json(questions);
+  } catch (error) {
+    console.error('Error fetching questions: o no', error);
+    res.status(500).json({ message: 'Error fetching questions in branch1', error: error.message });
+  }
+});
+router.get('/landqs', async (req, res) => {
+  try {
+    const questions = await landqs.find().sort({ questionID: 1 });
+    console.log('Fetched questions lands:', questions);
+    res.json(questions);
+  } catch (error) {
+    console.error('Error fetching questions: o no', error);
+    res.status(500).json({ message: 'Error fetching questions in branch1', error: error.message });
+  }
+});
+router.get('/chapterqs', async (req, res) => {
+  try {
+    const questions = await chapterqs.find().sort({ questionID: 1 });
+    console.log('Fetched questions chapter:', questions);
     res.json(questions);
   } catch (error) {
     console.error('Error fetching questions: o no', error);

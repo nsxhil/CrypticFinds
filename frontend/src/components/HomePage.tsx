@@ -5,6 +5,7 @@ import Earth from "../../public/Earth"; // Adjust path as necessary
 import Navbar from "./ui/Navbar";
 
 import { useAuth } from "./AuthContext";
+import Footer from "./Footer";
 
 /*const RotatingEarth: React.FC<{ mouseX: number; mouseY: number }> = ({
   mouseX,
@@ -44,44 +45,28 @@ const HomePage: React.FC = () => {
   }
 
   return (
-    <>
+    <div>
       <Navbar scrollTo={scrollOnClick} />
 
       {/* Main container with mouse movement handler */}
-      <div
-        className="relative w-full h-screen text-white"
-        onMouseMove={(e) => {
-          setMouseX(e.clientX);
-          setMouseY(e.clientY);
-        }}
-      >
-        {/* 3D Earth Canvas Overlay 
-        <div className="absolute top-[150px] right-[10%] w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] z-20">
-          <Canvas>
-            <ambientLight />
-            <Suspense fallback={null}>
-              <RotatingEarth mouseX={mouseX} mouseY={mouseY} />
-            </Suspense>
-          </Canvas>
-        </div>
-*/}
+      <div className="relative w-full h-screen text-white ">
         {/* Text and video container */}
         <div className="w-full h-full relative">
           {/* Gradient overlay */}
           <div className="z-10 absolute w-full h-full bg-gradient-to-t from-[#000021]"></div>
 
           {/* Text container */}
-          <div className="z-20 absolute  md:top-[190px] w-[90%] md:w-[80%] h-auto mx-[5%] md:mx-[10%] lg:mx-[20%]  ">
-            <h1 className="text-gray-300 font-bold text-sm md:text-md lg:text-lg px-2">
+          <div className="z-20 absolute  md:top-[230px] w-[90%] md:w-[80%] h-auto mx-[5%] md:mx-[10%] lg:mx-[20%]  animate-fadeIn">
+            <h1 className="text-gray-300 font-bold text-md md:text-lg lg:text-xl px-2">
               Welcome to
             </h1>
-            <h1 className="text-sky-400 text-2xl md:text-4xl lg:text-5xl my-8 font-bold">
+            <h1 className="text-sky-400 text-3xl md:text-5xl lg:text-6xl my-8 font-bold">
               CRYPTIC <span className="text-orange-400 ">FINDS</span>
             </h1>
 
             {/* Button with hover effect */}
             <Link to="/game">
-              <button className="relative group text-white font-bold py-3 md:py-4 px-4 md:px-6 border-none bg-transparent tracking-wide transition-all duration-500">
+              <button className="relative group text-white text-xl font-bold py-3 md:py-4 px-4 md:px-6 border-none bg-transparent tracking-wide  animate-fadeIn transition-all duration-500">
                 PLAY THE GAME
                 {/* Top left corner */}
                 <span className="absolute top-0 left-0 w-5 h-0.5 bg-orange-400 transition-all duration-700 group-hover:w-full"></span>
@@ -168,7 +153,8 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </div>
-    </>
+      <Footer />
+    </div>
   );
 };
 

@@ -20,7 +20,7 @@ const TypeWriterBottom: React.FC<TypeWriterBottomProps> = ({ user }) => {
   return (
     <div className="text-center my-8">
       {/* Align center and add margin */}
-      <h1 className=" text-lg">
+      <h1 className=" text-lg text-green-500">
         {showTypewriter && (
           <Typewriter
             words={[

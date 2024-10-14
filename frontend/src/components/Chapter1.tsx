@@ -15,6 +15,7 @@ import { AlertCircle, Globe, Rocket } from "lucide-react";
 import axios from "axios";
 import Navbar from "./ui/Navbar";
 import BranchOption from "./ui/BranchOption";
+import { Link } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -56,15 +57,14 @@ const Chapter1: React.FC = () => {
   const [answer, setAnswer] = useState("");
   const [showError, setShowError] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [spaceQuestions, setSpaceQuestions] = useState<Question[]>([]);
 
   const backgroundImages: { [key in GameState]: string } = {
-    start: "url('/vite.svg')",
+    start: "url('/img.webp')",
     ch0: "url('/img.webp')",
     choosebranch: "url('/image.webp')",
     space: "url('/bg1.webp')",
     land: "",
-    merge: "",
+    merge: "url('/merge.webp')",
     congrats: "url('/backgrounds/congrats-bg.webp')",
     end: "url('/backgrounds/end-bg.webp')",
   };
@@ -77,9 +77,7 @@ const Chapter1: React.FC = () => {
           const response = await axios.get(`${API_URL}/api/questions/ch0`);
 
           setQuestions(response.data);
-        }
-
-        if (user?.currentState === "space") {
+        } else if (user?.currentState === "space") {
           try {
             const spaceResponse = await axios.get(
               `${API_URL}/api/questions/branch1`
@@ -91,11 +89,20 @@ const Chapter1: React.FC = () => {
         } else if (user?.currentState === "land") {
           try {
             const landResponse = await axios.get(
-              `${API_URL}/api/questions/branch1?type=land`
+              `${API_URL}/api/questions/landqs`
             );
             setQuestions(landResponse.data);
           } catch (error) {
             console.error("Error fetching land questions:", error);
+          }
+        } else {
+          try {
+            const chapterResponse = await axios.get(
+              `${API_URL}/api/questions/chapterqs`
+            );
+            setQuestions(chapterResponse.data);
+          } catch (error) {
+            console.error("Error fetching chapter questions:", error);
           }
         }
       } catch (error) {
@@ -105,9 +112,6 @@ const Chapter1: React.FC = () => {
     fetchQuestions();
   }, [user?.currentState]);
 
-  // Update high score and clear localStorage when game ends
-
-  // Save score and question index in localStorage whenever they change
   useEffect(() => {
     updateUser(score.toString(), currentQuestionIndex.toString(), gameState);
   }, [score, currentQuestionIndex, gameState]);
@@ -116,7 +120,7 @@ const Chapter1: React.FC = () => {
   console.log(savedScore, savedQuestionIndex, savedGameState);
 
   const startGame = () => {
-    setGameState("ch0");
+    if (user?.currentState === "start") setGameState("ch0");
   };
 
   const checkAnswer = () => {
@@ -136,7 +140,12 @@ const Chapter1: React.FC = () => {
           if (gameState === "ch0") {
             setGameState("choosebranch");
           } else if (gameState === "land" || gameState === "space") {
+            setCurrentQuestionIndex(0);
+            setAnswer("");
             setGameState("merge");
+          }
+          if (gameState === "merge") {
+            setGameState("end");
           }
         }
       }, 2000);
@@ -166,13 +175,19 @@ const Chapter1: React.FC = () => {
               </p>
             </CardContent>
             <CardFooter className="flex justify-center gap-5">
-              <Button onClick={startGame}>Start Adventure</Button>
+              <Button
+                className="transition-all duration-700"
+                onClick={startGame}
+              >
+                Start Adventure
+              </Button>
             </CardFooter>
           </Card>
         );
       case "ch0":
       case "space":
       case "land":
+      case "merge":
         return (
           <Card
             key={currentQuestion?._id}
@@ -233,8 +248,6 @@ const Chapter1: React.FC = () => {
             </div>
           </div>
         );
-      case "merge":
-        return <div className="text-white">Add merge screen here...</div>;
       case "congrats":
         return (
           <Card className="max-w-md animate-fadeIn">
@@ -265,7 +278,9 @@ const Chapter1: React.FC = () => {
               <p className="text-center mt-4">Thank you for playing!</p>
             </CardContent>
             <CardFooter className="flex justify-between">
-              <Button onClick={() => setGameState("start")}>Play Again</Button>
+              <Link to="/">
+                <Button>Return Home</Button>
+              </Link>
             </CardFooter>
           </Card>
         );

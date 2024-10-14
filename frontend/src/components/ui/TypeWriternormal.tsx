@@ -15,7 +15,7 @@ const TypeWriterNormal: React.FC = () => {
     <div className="text-center my-8">
       {" "}
       {/* Align center and add margin */}
-      <h1 className=" text-sm">
+      <h1 className=" text-sm text-green-500">
         {showTypewriter && (
           <Typewriter
             words={["Solve riddles, uncover the story, earn points!"]}

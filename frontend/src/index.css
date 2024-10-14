@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 :root {
+  @apply scrollbar-hide;
+  
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
   line-height: 1.5;
