@@ -52,17 +52,17 @@ const SignInUp: React.FC<SignInUpProps> = ({ mode }) => {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="flex flex-col items-center w-full max-w-md p-6 bg-gray-900 rounded-lg shadow-xl border border-gray-800"
+        className="flex flex-col items-center w-full max-w-md p-2 rounded-lg shadow-xl border border-gray-800"
       >
         <Card className="w-full">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-white">
               {isSignIn ? "Welcome Back!" : "Create Account"}
             </CardTitle>
-            <CardDescription className="text-gray-400">
+            <CardDescription className="text-gray-700">
               {isSignIn
                 ? "Enter your credentials to access your account"
-                : "Sign up to explore new features!"}
+                : " Sign up to explore the thrilling adventure of CrypticFinds !"}
             </CardDescription>
           </CardHeader>
           <CardContent>

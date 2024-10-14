@@ -47,7 +47,6 @@ const CrypticFinds: React.FC = () => {
   //   fetchData();
   // }, []);
 
-  console.log(questions);
 
   const startGame = () => {
     navigate("/chapter1");

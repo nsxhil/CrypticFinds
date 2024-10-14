@@ -9,6 +9,6 @@ const QuestionSchema = new mongoose.Schema({
 });
 
 const Question = mongoose.model('Questions', QuestionSchema);
-const Branch1 = mongoose.model('branch1', QuestionSchema);
+const branch1 = mongoose.model('branch1', QuestionSchema);
 
-module.exports = { Question, Branch1 };
+module.exports = { Question, branch1 };

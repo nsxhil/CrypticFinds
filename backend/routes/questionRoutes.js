@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Question, Branch1} = require('../models/Questions');
+const {Question, branch1} = require('../models/Questions');
 
 
 
@@ -18,7 +18,7 @@ router.get('/ch0', async (req, res) => {
 
 router.get('/branch1', async (req, res) => {
   try {
-    const questions = await Branch1.find().sort({ questionID: 1 });
+    const questions = await branch1.find().sort({ questionID: 1 });
     console.log('Fetched questions:', questions);
     res.json(questions);
   } catch (error) {

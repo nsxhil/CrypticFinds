@@ -59,6 +59,7 @@ const Chapter1: React.FC = () => {
       try {
         const response = await axios.get(`${API_URL}/api/questions/branch1`);
         await setQuestions(response.data);
+        console.log(questions)
       } catch (error) {
         console.error("Error fetching questions:", error);
       }
