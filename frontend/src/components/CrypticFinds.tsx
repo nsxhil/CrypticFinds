@@ -34,18 +34,18 @@ const CrypticFinds: React.FC = () => {
   const [questions, setQuestions] = useState();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const questionResponse = await axios.get(`${API_URL}/questions`);
-        const questionData = await questionResponse;
-        setQuestions(questionData.data);
-      } catch (err) {
-        console.log("internal Error Occured", err);
-      }
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const questionResponse = await axios.get(`${API_URL}/questions`);
+  //       const questionData = await questionResponse;
+  //       setQuestions(questionData.data);
+  //     } catch (err) {
+  //       console.log("internal Error Occured", err);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   console.log(questions);
 

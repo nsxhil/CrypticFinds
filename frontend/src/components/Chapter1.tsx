@@ -12,13 +12,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Globe, Rocket } from "lucide-react";
 import axios from "axios";
 import Navbar from "./ui/Navbar";
+import BranchOption from "./ui/BranchOption";
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-type GameState = "start" | "ch0"| 'branch1' | "congrats" | "end";
+type GameState = "start" | "ch0"| 'choosebranch' | 'space' | 'land' | 'merge' | "congrats" | "end";
 
 interface Question {
   _id: string;
@@ -42,7 +44,10 @@ const Chapter1: React.FC = () => {
   const backgroundImages: { [key in GameState]: string } = {
     start: "url('/vite.svg')",
     ch0: "url('/img.webp')",
-    branch1: "url('/bg.jpeg')",
+    choosebranch: "url('/image.webp')",
+    space: "url('/bg.jpeg')",
+    land: "",
+    merge: "",
     congrats: "url('/backgrounds/congrats-bg.webp')",
     end: "url('/backgrounds/end-bg.webp')",
   };
@@ -53,7 +58,7 @@ const Chapter1: React.FC = () => {
     const fetchQuestions = async () => {
       try {
         const response = await axios.get(`${API_URL}/api/questions/branch1`);
-        setQuestions(response.data);
+        await setQuestions(response.data);
       } catch (error) {
         console.error("Error fetching questions:", error);
       }
@@ -80,23 +85,33 @@ const Chapter1: React.FC = () => {
   const checkAnswer = () => {
     var temp: GameState;
     if (answer.toLowerCase() === currentQuestion.answer.toLowerCase()) {
-      setScore(score + 10); 
+      setScore(score + 1); 
       temp = gameState;
       setGameState("congrats");
       setShowError(false);
       setTimeout(() => {
+        setGameState(temp)
         if (currentQuestionIndex + 1 < questions.length) {
           setCurrentQuestionIndex(currentQuestionIndex + 1);
           setAnswer("");
-          setGameState(temp);
+          
         } else {
-          setGameState("end");
+          if(gameState === 'ch0'){
+          setGameState("choosebranch");
+          }
+          else if(gameState === 'land' || gameState ==='space'){
+            setGameState('merge')
+          }
         }
       }, 2000);
     } else {
       setShowError(true);
     }
   };
+
+  const handleSelection = (branch: GameState) => {
+    setGameState(branch)
+  }
 
   const renderContent = () => {
     switch (gameState) {
@@ -151,7 +166,34 @@ const Chapter1: React.FC = () => {
           </Card>
         );
 
-        case "branch1":
+        // add choose branch ui here:
+
+        case "choosebranch":
+        
+
+          return(
+            <div className="min-h-screen bg-transparent text-white flex flex-col items-center justify-center p-4">
+            <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center">Choose Your Destiny</h1>
+            <div className="flex flex-col md:flex-row gap-8 ">
+              <BranchOption
+                title="Land"
+                icon={<Globe className="w-16 h-16 mb-4  " />}
+                description="Stay on land "
+                onClick={() => handleSelection('land')}
+                
+              />
+              <BranchOption
+                title="Space"
+                icon={<Rocket className="w-16 h-16 mb-4" />}
+                description="Go to space "
+                onClick={() => handleSelection('space')}
+                
+              />
+            </div>
+          </div>
+          );
+
+        case "space":
           return (
             <Card key={currentQuestion?._id} className="max-w-2xl max-h-full animate-fadeIn">
               <CardHeader>
@@ -187,6 +229,11 @@ const Chapter1: React.FC = () => {
               </CardFooter>
             </Card>
           );
+
+      case "merge":
+        return(
+          <div className="text-white"> add merge screen and add new game state for rest of the chapters </div>
+        )
 
       case "congrats":
         return (
@@ -225,6 +272,7 @@ const Chapter1: React.FC = () => {
     }
   };
 
+
   return (
     //<div className="min-h-screen w-screen relative bg-gradient-to-t from-black to-[#000021] flex flex-col items-center justify-center p-4">
     <div
@@ -243,14 +291,14 @@ const Chapter1: React.FC = () => {
       <div className="relative z-10 w-full flex flex-col items-center">
         <Navbar />
         {renderContent()}
-        {gameState === "playing" && questions.length > 0 && (
-          <div className="mt-4 w-full max-w-md">
+        {/* {!(gameState === 'start' || gameState === 'end') && questions.length > 0 && (
+          <div className="mt-4 w-full ">
             <Progress
               value={((currentQuestionIndex + 1) / questions.length) * 100}
               className="w-full"
             />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
