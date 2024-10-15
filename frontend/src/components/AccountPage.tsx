@@ -1,34 +1,26 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback} from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { User, Phone, Trophy } from 'lucide-react'
-
-import { useAuth } from './AuthContext' 
+import { User, Phone, Trophy, Scroll } from 'lucide-react'
 
 interface Profile{
-    username : string
-    highscore: number
-    email: string
-    phoneNumber: string
+  score: string
+  questionNo: string
+  currentState: string  
+  username : string
+  email: string
+  phoneNumber: string
+
 }
 
 export default function AccountPage() {
   // In a real application, you would fetch this data from an API or context
     var profile: Profile;
-    const temp: string = localStorage.getItem('user')
-    profile = {username: 'not found', highscore: 0, email: 'not found', phoneNumber: 'not found'}
+    const temp: string = localStorage.getItem('user') || ''
+    profile = {username: 'not found', score: '0', email: 'not found', phoneNumber: 'not found', currentState: 'error', questionNo: '0',}
     if(profile){
     profile = JSON.parse(temp)
-
-    
-}
-
-    
-
-    
-
-
-  
+    }
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -53,7 +45,11 @@ export default function AccountPage() {
           </div>
           <div className="flex items-center space-x-2">
             <Trophy className="w-5 h-5 text-yellow-500" />
-            <span>High Score: {profile.highscore}</span>
+            <span>High Score: {profile.score}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Scroll className="w-5 h-5 text-red-600" />
+            <span>Chapter: {profile.currentState}</span>
           </div>
         </CardContent>
       </Card>

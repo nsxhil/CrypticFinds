@@ -40,7 +40,7 @@ interface Question {
 
 const Chapter1: React.FC = () => {
   const { user, updateUser, updateStartTime, updateTimeTaken } = useAuth();
-  console.log(user);
+  // console.log(user);
   const savedScore = user?.score;
   const savedQuestionIndex = user?.questionNo;
   const savedGameState = user?.currentState;
@@ -150,7 +150,7 @@ const Chapter1: React.FC = () => {
   }, [score, currentQuestionIndex, gameState]);
 
   const currentQuestion = questions[currentQuestionIndex];
-  console.log(savedScore, savedQuestionIndex, savedGameState);
+  // console.log(savedScore, savedQuestionIndex, savedGameState);
 
   const startGame = () => {
     const currentDateTime = new Date();
@@ -250,7 +250,7 @@ const Chapter1: React.FC = () => {
         return (
           <>
             <h1
-              className={`${elapsedTimeClass} text-2xl font-bold mb-4 animate-fadeIn `}
+              className={`${elapsedTimeClass} text-2xl text-black font-bold mb-4 animate-fadeIn `}
             >
               Elapsed Time: {elapsedTime}
             </h1>

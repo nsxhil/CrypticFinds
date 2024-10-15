@@ -10,7 +10,7 @@ const QuestionSchema = new mongoose.Schema({
 
 const Question = mongoose.model('Questions', QuestionSchema);
 const branch1 = mongoose.model('branch1', QuestionSchema);
-const landqs = mongoose.model('landq', QuestionSchema);
+const landq = mongoose.model('landq', QuestionSchema);
 const chapterqs = mongoose.model('chapterqs', QuestionSchema);
 
-module.exports = { Question, branch1,landqs,chapterqs };
+module.exports = { Question, branch1,landq,chapterqs };
