@@ -1,14 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import { Button } from "@/components/ui/button";
-import { Card, CardFooter } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle, Axis3D } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import TypeWriter from "./ui/TypeWriter";
 import TypeWriterNormal from "./ui/TypeWriternormal";
 import TypeWriterBottom from "./ui/TypeWriterBottom";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+interface Question {
+  id: number;
+  text: string;
+  answer: string;
+  points: number;
+  story: string;
+}
 
 const CrypticFinds: React.FC = () => {
   const { user } = useAuth();
+  const [questions, setQuestions] = useState();
+  const [showButtons, setShowButtons] = useState(false); // State to control button visibility
   const navigate = useNavigate();
 
   // useEffect(() => {
@@ -28,20 +52,29 @@ const CrypticFinds: React.FC = () => {
     navigate("/chapter1");
   };
 
+  // Add a delay before showing the buttons
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowButtons(true);
+    }, 8000); // Adjust the delay time (2000ms = 2 seconds)
+
+    return () => clearTimeout(timer); // Clean up the timer on component unmount
+  }, []);
+
   return (
     <div className="flex items-center justify-center">
-      <Card className="max-w-md text-center animate-fadeIn top-[30vh]   bg-[url('bg4.png')]">
+      <Card className="w-[500px] h-[300px] text-center top-[30vh] bg-[url('/bg4.png')] px-5">
         <TypeWriter />
         <TypeWriterNormal />
         <TypeWriterBottom user={{ username: user?.username }} />
-        <CardFooter className="flex justify-center gap-5">
-          <Button className="tra" onClick={startGame}>
-            Start Adventure
-          </Button>
-          <Link to="/leaderboard">
-            <Button>Leaderboard</Button>
-          </Link>
-        </CardFooter>
+        {showButtons && (
+          <CardFooter className="flex justify-center gap-5 animate-fadeIn">
+            <Button onClick={startGame}>Start Adventure</Button>
+            <Link to="/leaderboard">
+              <Button>Leaderboard</Button>
+            </Link>
+          </CardFooter>
+        )}
       </Card>
     </div>
   );

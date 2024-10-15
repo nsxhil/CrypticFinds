@@ -12,7 +12,7 @@ const TypeWriterBottom: React.FC<TypeWriterBottomProps> = ({ user }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowTypewriter(true); // Show the typewriter after the delay
-    }, 6000); // 4-second delay
+    }, 5250); // 4-second delay
 
     return () => clearTimeout(timer); // Clean up the timer on component unmount
   }, []);

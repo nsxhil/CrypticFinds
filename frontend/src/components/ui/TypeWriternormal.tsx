@@ -7,7 +7,7 @@ const TypeWriterNormal: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowTypewriter(true); // Show the typewriter after the delay
-    }, 3000); // 2 second delay
+    }, 2300); // 2 second delay
 
     return () => clearTimeout(timer); // Clean up the timer on component unmount
   }, []);

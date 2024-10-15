@@ -8,14 +8,14 @@ const TypingEffect: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowTypewriter(true); // Show the typewriter after the delay
-    }, 1000); // 2 second delay
+    }, 0); // 2 second delay
 
     return () => clearTimeout(timer); // Clean up the timer on component unmount
   }, []);
 
   return (
     <div className="text-center my-8">
-      <h1 className="text-2xl text-green-500 font-bold">
+      <h1 className="text-2xl font-bold text-green-500">
         {showTypewriter && (
           <Typewriter
             words={["Welcome to Cryptic Finds"]}

@@ -67,7 +67,7 @@ const Chapter1: React.FC = () => {
     choosebranch: "url('/image.webp')",
     space: "url('/bg1.webp')",
     land: "url('/bg5.webp')",
-    merge: "url('/merge.webp')",
+    merge: "url('/bg_final.webp')",
     merging: "url('/merging.webp')", // New background for merging
     congrats: "url('/backgrounds/congrats-bg.webp')",
     end: "url('/backgrounds/end-bg.webp')",
@@ -99,7 +99,21 @@ const Chapter1: React.FC = () => {
           } catch (error) {
             console.error("Error fetching land questions:", error);
           }
-        } else {
+        } else if (user?.currentState === "merging") {
+          if (user?.currentState === "merging") {
+            const timer = setTimeout(() => {
+              setGameState("merge");
+              updateUser(
+                score.toString(),
+                currentQuestionIndex.toString(),
+                gameState
+              );
+            }, 2000);
+
+            // Cleanup the timer when the component unmounts or gameState changes
+            return () => clearTimeout(timer);
+          }
+        } else if (user?.currentState === "merge") {
           try {
             const chapterResponse = await axios.get(
               `${API_URL}/api/questions/chapterqs`
@@ -118,7 +132,7 @@ const Chapter1: React.FC = () => {
 
   useEffect(() => {
     // Timer for elapsed time
-    const starttime = user?.startTime ? new Date(user.startTime) : null;
+    const starttime = user?.startTime ? new Date(user.startTime) : new Date();
 
     const updateElapsedTime = () => {
       if (starttime) {
@@ -147,7 +161,8 @@ const Chapter1: React.FC = () => {
   }, [user?.startTime]);
 
   useEffect(() => {
-    updateUser(score.toString(), currentQuestionIndex.toString(), gameState);
+    if (gameState !== "congrats")
+      updateUser(score.toString(), currentQuestionIndex.toString(), gameState);
   }, [score, currentQuestionIndex, gameState]);
 
   const currentQuestion = questions[currentQuestionIndex];
@@ -198,8 +213,6 @@ const Chapter1: React.FC = () => {
             setCurrentQuestionIndex(0);
             setAnswer("");
             setGameState("merging"); // Transition to merging
-          }
-          if (gameState === "merging") {
           }
           if (gameState === "merge") {
             setGameState("end");
