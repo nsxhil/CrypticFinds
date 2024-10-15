@@ -30,7 +30,7 @@ const CrypticFinds: React.FC = () => {
 
   return (
     <div className="flex items-center justify-center">
-      <Card className="max-w-md text-center animate-fadeIn top-[30vh] bg-black">
+      <Card className="max-w-md text-center animate-fadeIn top-[30vh]   bg-[url('bg4.png')]">
         <TypeWriter />
         <TypeWriterNormal />
         <TypeWriterBottom user={{ username: user?.username }} />

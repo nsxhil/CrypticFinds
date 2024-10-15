@@ -24,7 +24,7 @@ router.post('/signup', async (req, res) => {
             return res.status(400).json({ message: 'Username or email already exists' });
         }
 
-        // Create user with default values for score, questionNo, and currentState
+        // Create user with default values for score, questionNo, currentState, startTime, and timeTaken
         user = new User({
             username,
             email,
@@ -32,10 +32,11 @@ router.post('/signup', async (req, res) => {
             password,
             score: "0", // Ensure these are strings as per your schema or change the schema to use Number
             questionNo: "0",
-            currentState: "start"
+            currentState: "start",
+            startTime: null, // Initially null, will be set when the quiz starts
+            timeTaken: 0 // Initially 0, will be calculated when the quiz finishes
         });
-        
-        
+
         await user.save();
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -46,7 +47,6 @@ router.post('/signup', async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
-
 
 // Login route
 router.post('/login', async (req, res) => {
@@ -62,14 +62,26 @@ router.post('/login', async (req, res) => {
         if (!isMatch) {
             return res.status(401).json({ message: 'Invalid username or password' });
         }
-        console.log(user)
+
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token, username: user.username, phoneNumber: user.phoneNumber, email: user.email ,score:user.score,questionNo:user.questionNo,currentState:user.currentState}); 
+
+        res.json({
+            token,
+            username: user.username,
+            phoneNumber: user.phoneNumber,
+            email: user.email,
+            score: user.score,
+            questionNo: user.questionNo,
+            currentState: user.currentState,
+            startTime: user.startTime, // Include startTime for quiz tracking
+            timeTaken: user.timeTaken // Include timeTaken for quiz tracking
+        });
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
+
 
 router.post('/getuser', async (req, res) => {
     const {user} = req.body; 
@@ -84,15 +96,76 @@ router.post('/getuser', async (req, res) => {
 })
 router.get('/getalluser', async (req, res) => {
     try {
-        // Find all users and select only the `username` and `score` fields
-        const usersData = await User.find({}, 'username score');
+        const usersData = await User.aggregate([
+            {
+                $project: {
+                    username: 1,
+                    score: { $toInt: "$score" }, // Convert the score field to an integer
+                    timeTaken: 1
+                }
+            },
+            {
+                $sort: {
+                    score: -1, // Sort by score in descending order
+                    timeTaken: 1 // Sort by timeTaken in ascending order
+                }
+            }
+        ]);
+
         console.log(usersData);
         res.status(200).json(usersData);
     } catch (err) {
         console.error("Error in getting data", err);
-        res.status(500).json({ message: 'Error in getting userdata', error: err.message });
+        res.status(500).json({ message: 'Error in getting user data', error: err.message });
     }
 });
+
+
+router.post('/updateStartTime', async (req, res) => {
+    const { username, startTime } = req.body;
+
+    try {
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Update the startTime
+        user.startTime = startTime;
+
+        await user.save();
+
+        console.log('Updated startTime for user:', user);
+        res.status(200).json({ message: 'Start time updated successfully', user });
+    } catch (error) {
+        console.error('Error updating startTime:', error);
+        res.status(500).json({ message: 'Error updating startTime', error: error.message });
+    }
+});
+router.post('/updateTimeTaken', async (req, res) => {
+    const { username, timeTaken } = req.body;
+
+    try {
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Update the timeTaken
+        user.timeTaken = timeTaken;
+
+        await user.save();
+
+        console.log('Updated timeTaken for user:', user);
+        res.status(200).json({ message: 'Time taken updated successfully', user });
+    } catch (error) {
+        console.error('Error updating timeTaken:', error);
+        res.status(500).json({ message: 'Error updating timeTaken', error: error.message });
+    }
+});
+
 
 router.post('/updateuser', async (req, res) => {
     const { username, score, questionNo, currentState } = req.body;

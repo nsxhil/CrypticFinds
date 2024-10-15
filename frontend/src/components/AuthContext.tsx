@@ -10,6 +10,8 @@ interface User {
   score: string;
   questionNo: string;
   currentState: string;
+  startTime?: Date | null;
+  timeTaken?: number;
 }
 
 interface AuthContextType {
@@ -27,6 +29,8 @@ interface AuthContextType {
     questionNo: string,
     currentState: string
   ) => Promise<boolean>;
+  updateStartTime: (startTime: Date) => Promise<boolean>;
+  updateTimeTaken: (timeTaken: number) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -71,19 +75,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         token,
         username: responseUsername,
         email: responseEmail,
-        phoneNumber: responsephoneNumber,
+        phoneNumber: responsePhoneNumber,
         score: responseScore,
-        questionNo: responsequestionNo,
+        questionNo: responseQuestionNo,
         currentState: responseCurrentState,
+        startTime: responseStartTime,
+        timeTaken: responseTimeTaken,
       } = response.data;
       localStorage.setItem("token", token);
       const user = {
         score: responseScore,
-        questionNo: responsequestionNo,
+        questionNo: responseQuestionNo,
         currentState: responseCurrentState,
         username: responseUsername,
         email: responseEmail,
-        phoneNumber: responsephoneNumber,
+        phoneNumber: responsePhoneNumber,
+        startTime: responseStartTime,
+        timeTaken: responseTimeTaken,
       };
       setUser(user);
       localStorage.setItem("user", JSON.stringify(user));
@@ -136,7 +144,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.removeItem("user");
   };
 
-  // New method to update the user's score, questionNo, and currentState
   const updateUser = async (
     score: string,
     questionNo: string,
@@ -147,20 +154,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         throw new Error("User not authenticated");
       }
 
-      const response = await axios.post(
-        `${API_URL}/api/auth/updateuser`,
-        {
-          username: user.username,
-          score,
-          questionNo,
-          currentState,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.post(`${API_URL}/api/auth/updateuser`, {
+        username: user.username,
+        score,
+        questionNo,
+        currentState,
+      });
 
       const updatedUser = response.data.user;
       setUser(updatedUser);
@@ -172,8 +171,60 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const updateStartTime = async (startTime: Date) => {
+    try {
+      if (!user) {
+        throw new Error("User not authenticated");
+      }
+
+      const response = await axios.post(`${API_URL}/api/auth/updateStartTime`, {
+        username: user.username,
+        startTime,
+      });
+
+      const updatedUser = response.data.user;
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      return true;
+    } catch (error) {
+      console.error("Update start time error:", error);
+      return false;
+    }
+  };
+
+  const updateTimeTaken = async (timeTaken: number) => {
+    try {
+      if (!user) {
+        throw new Error("User not authenticated");
+      }
+
+      const response = await axios.post(`${API_URL}/api/auth/updateTimeTaken`, {
+        username: user.username,
+        timeTaken,
+      });
+
+      const updatedUser = response.data.user;
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      return true;
+    } catch (error) {
+      console.error("Update time taken error:", error);
+      return false;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, signIn, signUp, signOut, updateUser }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        signIn,
+        signUp,
+        signOut,
+        updateUser,
+        updateStartTime,
+        updateTimeTaken,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

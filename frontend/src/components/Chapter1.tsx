@@ -39,7 +39,7 @@ interface Question {
 }
 
 const Chapter1: React.FC = () => {
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, updateStartTime, updateTimeTaken } = useAuth();
   console.log(user);
   const savedScore = user?.score;
   const savedQuestionIndex = user?.questionNo;
@@ -55,8 +55,11 @@ const Chapter1: React.FC = () => {
     parseInt(savedScore ? savedScore : "0", 10)
   );
   const [answer, setAnswer] = useState("");
+  const [elapsedTime, setElapsedTime] = useState<string>("00:00:00");
   const [showError, setShowError] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
+  const elapsedTimeClass =
+    gameState === "space" ? "text-yellow-400" : "text-gray-100";
 
   const backgroundImages: { [key in GameState]: string } = {
     start: "url('/img.webp')",
@@ -113,6 +116,36 @@ const Chapter1: React.FC = () => {
   }, [user?.currentState]);
 
   useEffect(() => {
+    // Timer for elapsed time
+    const starttime = user?.startTime ? new Date(user.startTime) : null;
+
+    const updateElapsedTime = () => {
+      if (starttime) {
+        const now = new Date();
+        const timeDifference = now.getTime() - starttime.getTime();
+
+        const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+        const minutes = Math.floor(
+          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+        const formattedTime = [
+          String(hours).padStart(2, "0"),
+          String(minutes).padStart(2, "0"),
+          String(seconds).padStart(2, "0"),
+        ].join(":");
+
+        setElapsedTime(formattedTime);
+      }
+    };
+
+    const intervalId = setInterval(updateElapsedTime, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [user?.startTime]);
+
+  useEffect(() => {
     updateUser(score.toString(), currentQuestionIndex.toString(), gameState);
   }, [score, currentQuestionIndex, gameState]);
 
@@ -120,6 +153,27 @@ const Chapter1: React.FC = () => {
   console.log(savedScore, savedQuestionIndex, savedGameState);
 
   const startGame = () => {
+    const currentDateTime = new Date();
+    updateStartTime(currentDateTime);
+
+    // Immediately update the timer when transitioning to 'ch0'
+    const now = new Date();
+    const timeDifference = now.getTime() - currentDateTime.getTime();
+
+    const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+    const minutes = Math.floor(
+      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+    );
+    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+    const formattedTime = [
+      String(hours).padStart(2, "0"),
+      String(minutes).padStart(2, "0"),
+      String(seconds).padStart(2, "0"),
+    ].join(":");
+
+    setElapsedTime(formattedTime);
+
     if (user?.currentState === "start") setGameState("ch0");
   };
 
@@ -146,6 +200,14 @@ const Chapter1: React.FC = () => {
           }
           if (gameState === "merge") {
             setGameState("end");
+            const endtime = new Date();
+            const starttime = user?.startTime ? new Date(user.startTime) : null;
+            if (starttime) {
+              const timeTakenInMilliseconds =
+                endtime.getTime() - starttime.getTime();
+
+              updateTimeTaken(timeTakenInMilliseconds);
+            }
           }
         }
       }, 2000);
@@ -175,10 +237,7 @@ const Chapter1: React.FC = () => {
               </p>
             </CardContent>
             <CardFooter className="flex justify-center gap-5">
-              <Button
-                className="transition-all duration-700"
-                onClick={startGame}
-              >
+              <Button className="" onClick={startGame}>
                 Start Adventure
               </Button>
             </CardFooter>
@@ -189,42 +248,51 @@ const Chapter1: React.FC = () => {
       case "land":
       case "merge":
         return (
-          <Card
-            key={currentQuestion?._id}
-            className="max-w-2xl max-h-full animate-fadeIn"
-          >
-            <CardHeader>
-              <CardTitle className="text-xl">
-                Question {currentQuestion?.questionID}
-              </CardTitle>
-              <CardDescription>{currentQuestion?.storyDesc}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="font-medium">{currentQuestion?.questionDesc}</p>
-              <Input
-                type="text"
-                placeholder="Your answer"
-                value={answer}
-                onChange={(e) => {
-                  setAnswer(e.target.value);
-                  if (showError) setShowError(false);
-                }}
-                className={`${showError ? "animate-shake border-red-500" : ""}`}
-              />
-              {showError && (
-                <Alert className="mt-1" variant="destructive">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>
-                    Incorrect answer. Hint: {currentQuestion?.hint}
-                  </AlertDescription>
-                </Alert>
-              )}
-            </CardContent>
-            <CardFooter className="flex justify-between">
-              <div className="font-semibold">Score: {score}</div>
-              <Button onClick={checkAnswer}>Submit Answer</Button>
-            </CardFooter>
-          </Card>
+          <>
+            <h1
+              className={`${elapsedTimeClass} text-2xl font-bold mb-4 animate-fadeIn `}
+            >
+              Elapsed Time: {elapsedTime}
+            </h1>
+            <Card
+              key={currentQuestion?._id}
+              className="max-w-2xl max-h-full animate-fadeIn"
+            >
+              <CardHeader>
+                <CardTitle className="text-xl">
+                  Question {currentQuestion?.questionID}
+                </CardTitle>
+                <CardDescription>{currentQuestion?.storyDesc}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="font-medium">{currentQuestion?.questionDesc}</p>
+                <Input
+                  type="text"
+                  placeholder="Your answer"
+                  value={answer}
+                  onChange={(e) => {
+                    setAnswer(e.target.value);
+                    if (showError) setShowError(false);
+                  }}
+                  className={`${
+                    showError ? "animate-shake border-red-500" : ""
+                  }`}
+                />
+                {showError && (
+                  <Alert className="mt-1" variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>
+                      Incorrect answer. Hint: {currentQuestion?.hint}
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </CardContent>
+              <CardFooter className="flex justify-between">
+                <div className="font-semibold">Score: {score}</div>
+                <Button onClick={checkAnswer}>Submit Answer</Button>
+              </CardFooter>
+            </Card>
+          </>
         );
       case "choosebranch":
         return (
