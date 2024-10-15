@@ -26,9 +26,9 @@ type GameState =
   | "space"
   | "land"
   | "merge"
+  | "merging" // New state added
   | "congrats"
   | "end";
-
 interface Question {
   _id: string;
   storyDesc: string;
@@ -66,8 +66,9 @@ const Chapter1: React.FC = () => {
     ch0: "url('/img.webp')",
     choosebranch: "url('/image.webp')",
     space: "url('/bg1.webp')",
-    land: "",
+    land: "url('/bg5.webp')",
     merge: "url('/merge.webp')",
+    merging: "url('/merging.webp')", // New background for merging
     congrats: "url('/backgrounds/congrats-bg.webp')",
     end: "url('/backgrounds/end-bg.webp')",
   };
@@ -196,7 +197,9 @@ const Chapter1: React.FC = () => {
           } else if (gameState === "land" || gameState === "space") {
             setCurrentQuestionIndex(0);
             setAnswer("");
-            setGameState("merge");
+            setGameState("merging"); // Transition to merging
+          }
+          if (gameState === "merging") {
           }
           if (gameState === "merge") {
             setGameState("end");
@@ -205,7 +208,6 @@ const Chapter1: React.FC = () => {
             if (starttime) {
               const timeTakenInMilliseconds =
                 endtime.getTime() - starttime.getTime();
-
               updateTimeTaken(timeTakenInMilliseconds);
             }
           }
@@ -215,7 +217,6 @@ const Chapter1: React.FC = () => {
       setShowError(true);
     }
   };
-
   const handleSelection = async (branch: GameState) => {
     setGameState(branch);
 
@@ -315,6 +316,22 @@ const Chapter1: React.FC = () => {
               />
             </div>
           </div>
+        );
+      case "merging": // Merging state case
+        return (
+          <Card className="max-w-md animate-fadeIn">
+            <CardHeader>
+              <CardTitle className="text-2xl">Merging Worlds...</CardTitle>
+              <CardDescription>
+                The land and space are converging into one.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-center text-xl font-bold">
+                Stay tuned for the next step.
+              </p>
+            </CardContent>
+          </Card>
         );
       case "congrats":
         return (
