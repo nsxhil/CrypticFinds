@@ -1,52 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
+// import { Input } from "@/components/ui/input";
+// import { Progress } from "@/components/ui/progress";
 import {
   Card,
-  CardContent,
-  CardDescription,
+
   CardFooter,
-  CardHeader,
-  CardTitle,
+
 } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle, Axis3D } from "lucide-react";
+// import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+// import { AlertCircle, Axis3D } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import TypeWriter from "./ui/TypeWriter";
 import TypeWriterNormal from "./ui/TypeWriternormal";
 import TypeWriterBottom from "./ui/TypeWriterBottom";
-import axios from "axios";
+// import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL;
+// const API_URL = import.meta.env.VITE_API_URL;
 
-interface Question {
-  id: number;
-  text: string;
-  answer: string;
-  points: number;
-  story: string;
-}
+// interface Question {
+//   id: number;
+//   text: string;
+//   answer: string;
+//   points: number;
+//   story: string;
+// }
 
 const CrypticFinds: React.FC = () => {
   const { user } = useAuth();
-  const [questions, setQuestions] = useState();
+  // const [questions, setQuestions] = useState();
   const [showButtons, setShowButtons] = useState(false); // State to control button visibility
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const questionResponse = await axios.get(`${API_URL}/questions`);
-  //       const questionData = await questionResponse;
-  //       setQuestions(questionData.data);
-  //     } catch (err) {
-  //       console.log("internal Error Occured", err);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
 
   const startGame = () => {
     navigate("/chapter1");
