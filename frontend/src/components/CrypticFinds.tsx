@@ -56,7 +56,7 @@ const CrypticFinds: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowButtons(true);
-    }, 8000); // Adjust the delay time (2000ms = 2 seconds)
+    }, 500); // Adjust the delay time (2000ms = 2 seconds)
 
     return () => clearTimeout(timer); // Clean up the timer on component unmount
   }, []);
@@ -64,11 +64,11 @@ const CrypticFinds: React.FC = () => {
   return (
     <div className="flex items-center justify-center">
       <Card className="w-[500px] h-[300px] text-center top-[30vh] bg-[url('/bg4.png')] px-5">
-        <TypeWriter />
+        <TypeWriter  />
         <TypeWriterNormal />
         <TypeWriterBottom user={{ username: user?.username }} />
         {showButtons && (
-          <CardFooter className="flex justify-center gap-5 animate-fadeIn">
+          <CardFooter className="flex justify-center gap-5 animate-fadeIn ">
             <Button onClick={startGame}>Start Adventure</Button>
             <Link to="/leaderboard">
               <Button>Leaderboard</Button>

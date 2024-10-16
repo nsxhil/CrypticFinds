@@ -276,10 +276,11 @@ const Chapter1: React.FC = () => {
                 <CardTitle className="text-xl">
                   Question {currentQuestion?.questionID}
                 </CardTitle>
-                <CardDescription>{currentQuestion?.storyDesc}</CardDescription>
+                <CardDescription >{currentQuestion?.storyDesc}</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="font-medium">{currentQuestion?.questionDesc}</p>
+                <p className="font-medium break-words ">{currentQuestion?.questionDesc}</p>
+                
                 <Input
                   type="text"
                   placeholder="Your answer"
@@ -292,6 +293,7 @@ const Chapter1: React.FC = () => {
                     showError ? "animate-shake border-red-500" : ""
                   }`}
                 />
+                { (currentQuestion?.questionID==='5' && gameState==='ch0') && <div className="text-white">32A53R44J32F</div> } 
                 {showError && (
                   <Alert className="mt-1" variant="destructive">
                     <AlertCircle className="h-4 w-4" />
