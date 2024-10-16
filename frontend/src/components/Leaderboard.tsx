@@ -38,6 +38,7 @@ const Leaderboard: React.FC = () => {
     };
     fetchuser();
   }, []);
+  console.log(leaderboard);
 
   // Function to convert milliseconds to "HH:MM:SS"
   const formatTime = (milliseconds: number) => {

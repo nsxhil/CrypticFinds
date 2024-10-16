@@ -55,7 +55,7 @@ const Chapter1: React.FC = () => {
     parseInt(savedScore ? savedScore : "0", 10)
   );
   const [answer, setAnswer] = useState("");
-  const [elapsedTime, setElapsedTime] = useState<string>("00:00:00");
+  const [elapsedTime, setElapsedTime] = useState<string>("Loading...");
   const [showError, setShowError] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
   const elapsedTimeClass =
@@ -170,34 +170,50 @@ const Chapter1: React.FC = () => {
 
   const startGame = () => {
     const currentDateTime = new Date();
-    updateStartTime(currentDateTime);
 
-    // Immediately update the timer when transitioning to 'ch0'
-    const now = new Date();
-    const timeDifference = now.getTime() - currentDateTime.getTime();
+    // Define the start and end date/time for access
+    const accessStartTime = new Date("2024-10-18T09:00:00"); // Adjust to your desired start date/time
+    const accessEndTime = new Date("2024-10-18T23:59:59"); // Adjust to your desired end date/time
 
-    const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-    const minutes = Math.floor(
-      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-    );
-    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+    // Check if the current date/time is within the allowed time window
+    if (
+      currentDateTime >= accessStartTime &&
+      currentDateTime <= accessEndTime
+    ) {
+      updateStartTime(currentDateTime);
 
-    const formattedTime = [
-      String(hours).padStart(2, "0"),
-      String(minutes).padStart(2, "0"),
-      String(seconds).padStart(2, "0"),
-    ].join(":");
+      // Immediately update the timer when transitioning to 'ch0'
+      const now = new Date();
+      const timeDifference = now.getTime() - currentDateTime.getTime();
 
-    setElapsedTime(formattedTime);
+      const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+      const minutes = Math.floor(
+        (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+      );
+      const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-    if (user?.currentState === "start") setGameState("ch0");
+      const formattedTime = [
+        String(hours).padStart(2, "0"),
+        String(minutes).padStart(2, "0"),
+        String(seconds).padStart(2, "0"),
+      ].join(":");
+
+      setElapsedTime(formattedTime);
+
+      if (user?.currentState === "start") setGameState("ch0");
+    } else {
+      // If outside of allowed time window, show an error or notification
+      alert(
+        "The game is only accessible between October from 18th october from 00:00 to 23:59"
+      );
+    }
   };
-
   const checkAnswer = () => {
     let temp: GameState;
     if (answer.toLowerCase() === currentQuestion?.answer.toLowerCase()) {
       setScore(score + 1);
       temp = gameState;
+
       setGameState("congrats");
       setShowError(false);
       setTimeout(() => {
@@ -276,11 +292,13 @@ const Chapter1: React.FC = () => {
                 <CardTitle className="text-xl">
                   Question {currentQuestion?.questionID}
                 </CardTitle>
-                <CardDescription >{currentQuestion?.storyDesc}</CardDescription>
+                <CardDescription>{currentQuestion?.storyDesc}</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="font-medium break-words ">{currentQuestion?.questionDesc}</p>
-                
+                <p className="font-medium break-words ">
+                  {currentQuestion?.questionDesc}
+                </p>
+
                 <Input
                   type="text"
                   placeholder="Your answer"
@@ -293,7 +311,9 @@ const Chapter1: React.FC = () => {
                     showError ? "animate-shake border-red-500" : ""
                   }`}
                 />
-                { (currentQuestion?.questionID==='5' && gameState==='ch0') && <div className="text-white">32A53R44J32F</div> } 
+                {currentQuestion?.questionID === "5" && gameState === "ch0" && (
+                  <div className="text-white">32A53R44J32F</div>
+                )}
                 {showError && (
                   <Alert className="mt-1" variant="destructive">
                     <AlertCircle className="h-4 w-4" />

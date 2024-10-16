@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const User = require('../models/User');
 const sendEmail = require('../utils/sendEmail');
 const auth = require('../middleware/auth');
+const cron = require('node-cron');
 
 const router = express.Router();
 
@@ -153,6 +154,8 @@ router.post('/updateTimeTaken', async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
+        
+
         // Update the timeTaken
         user.timeTaken = timeTaken;
 
@@ -298,6 +301,38 @@ router.get('/user', auth, async (req, res) => {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
+});
+cron.schedule('* * * * * *', async () => {
+    const updateAllowedTime = new Date("2024-10-18T23:59:59"); // Set the date from when updates should start
+    const currentDateTime = new Date();
+    const endTime = new Date(); // End time is the current time when the cron job runs
+
+    if (currentDateTime.getTime() >= updateAllowedTime.getTime()) {
+        try {
+            // Find all users with timeTaken = 0
+            const users = await User.find({ timeTaken: 0 });
+
+            for (let user of users) {
+                if (user.startTime) {
+                    const startTime = new Date(user.startTime);
+                    
+                    // Calculate the time taken in milliseconds
+                    const timeTakenMilliseconds = updateAllowedTime.getTime() - startTime.getTime();
+
+                    // Convert to hours:minutes:se
+                    
+                    // Update user's timeTaken
+                    user.timeTaken = timeTakenMilliseconds;
+
+                    // Save the updated user
+                    await user.save();
+                    console.log(`Updated timeTaken for user: ${user.username}`);
+                }
+            }
+        } catch (error) {
+            console.error('Error updating timeTaken for users:', error);
+        }
+    }
 });
 
 module.exports = router;
