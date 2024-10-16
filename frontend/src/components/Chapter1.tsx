@@ -60,6 +60,7 @@ const Chapter1: React.FC = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const elapsedTimeClass =
     gameState === "space" ? "text-yellow-400" : "text-gray-100";
+  const [hint, setHint] = useState<string>("");
 
   const backgroundImages: { [key in GameState]: string } = {
     start: "url('/img.webp')",
@@ -172,7 +173,7 @@ const Chapter1: React.FC = () => {
     const currentDateTime = new Date();
 
     // Define the start and end date/time for access
-    const accessStartTime = new Date("2024-10-18T09:00:00"); // Adjust to your desired start date/time
+    const accessStartTime = new Date("2024-10-15T09:00:00"); // Adjust to your desired start date/time
     const accessEndTime = new Date("2024-10-18T23:59:59"); // Adjust to your desired end date/time
 
     // Check if the current date/time is within the allowed time window
@@ -208,41 +209,51 @@ const Chapter1: React.FC = () => {
       );
     }
   };
-  const checkAnswer = () => {
-    let temp: GameState;
-    if (answer.toLowerCase() === currentQuestion?.answer.toLowerCase()) {
-      setScore(score + 1);
-      temp = gameState;
+  const checkAnswer = async () => {
+    try {
+      const response = await axios.post(`${API_URL}/api/questions/checkans`, {
+        questionId: currentQuestion?.questionID,
+        userAnswer: answer,
+        gameState: gameState
+      });
 
-      setGameState("congrats");
-      setShowError(false);
-      setTimeout(() => {
-        setGameState(temp);
-        if (currentQuestionIndex + 1 < questions.length) {
-          setCurrentQuestionIndex(currentQuestionIndex + 1);
-          setAnswer("");
-        } else {
-          setAnswer("");
-          if (gameState === "ch0") {
-            setGameState("choosebranch");
-          } else if (gameState === "land" || gameState === "space") {
-            setCurrentQuestionIndex(0);
+      if (response.data.correct) {
+        setScore(score + 1);
+        let temp: GameState = gameState;
+        setGameState("congrats");
+        setShowError(false);
+        setTimeout(() => {
+          setGameState(temp);
+          if (currentQuestionIndex + 1 < questions.length) {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
             setAnswer("");
-            setGameState("merging"); // Transition to merging
-          }
-          if (gameState === "merge") {
-            setGameState("end");
-            const endtime = new Date();
-            const starttime = user?.startTime ? new Date(user.startTime) : null;
-            if (starttime) {
-              const timeTakenInMilliseconds =
-                endtime.getTime() - starttime.getTime();
-              updateTimeTaken(timeTakenInMilliseconds);
+          } else {
+            setAnswer("");
+            if (gameState === "ch0") {
+              setGameState("choosebranch");
+            } else if (gameState === "land" || gameState === "space") {
+              setCurrentQuestionIndex(0);
+              setAnswer("");
+              setGameState("merging");
+            }
+            if (gameState === "merge") {
+              setGameState("end");
+              const endtime = new Date();
+              const starttime = user?.startTime ? new Date(user.startTime) : null;
+              if (starttime) {
+                const timeTakenInMilliseconds =
+                  endtime.getTime() - starttime.getTime();
+                updateTimeTaken(timeTakenInMilliseconds);
+              }
             }
           }
-        }
-      }, 2000);
-    } else {
+        }, 2000);
+      } else {
+        setShowError(true);
+        setHint(response.data.hint);
+      }
+    } catch (error) {
+      console.error("Error checking answer:", error);
       setShowError(true);
     }
   };
@@ -318,7 +329,7 @@ const Chapter1: React.FC = () => {
                   <Alert className="mt-1" variant="destructive">
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>
-                      Incorrect answer. Hint: {currentQuestion?.hint}
+                      Incorrect answer. Hint: {hint}
                     </AlertDescription>
                   </Alert>
                 )}
