@@ -34,20 +34,20 @@ app.listen(PORT, () => {
 });
 
 // Keep-alive route
-app.get('/keep-alive', (req, res) => {
-    res.status(200).send('Server is alive');
-});
+// app.get('/keep-alive', (req, res) => {
+//     res.status(200).send('Server is alive');
+// });
 
-// Keep-alive function
-const keepAliveInterval = 14 * 60 * 1000; // 14 minutes
+// // Keep-alive function
+// const keepAliveInterval = 14 * 60 * 1000; // 14 minutes
 
-function keepAlive() {
-    fetch(`${process.env.SERVER_URL}/keep-alive`)
-        .then(response => console.log('Keep-alive response:', response.status))
-        .catch(error => console.error('Keep-alive error:', error));
-}
+// function keepAlive() {
+//     fetch(`${process.env.SERVER_URL}/keep-alive`)
+//         .then(response => console.log('Keep-alive response:', response.status))
+//         .catch(error => console.error('Keep-alive error:', error));
+// }
 
-setInterval(keepAlive, keepAliveInterval);
+// setInterval(keepAlive, keepAliveInterval);
 
 
 
