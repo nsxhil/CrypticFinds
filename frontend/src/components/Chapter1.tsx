@@ -430,7 +430,7 @@ const Chapter1: React.FC = () => {
                 </p>
                 <p className="text-center mt-4">Thank you for playing!</p>
               </CardContent>
-              <CardFooter className="flex justify-between">
+              <CardFooter className="flex justify-center">
                 <Link to="/">
                   <Button>Return Home</Button>
                 </Link>
