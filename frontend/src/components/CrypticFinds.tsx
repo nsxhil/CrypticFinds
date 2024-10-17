@@ -56,7 +56,7 @@ const CrypticFinds: React.FC = () => {
         {showButtons && (
           <CardFooter className="flex justify-center gap-5 animate-fadeIn ">
             <Button onClick={startGame}>Start Adventure</Button>
-            <Link to="/leaderboard">
+            <Link to="/">
               <Button>Leaderboard</Button>
             </Link>
           </CardFooter>
