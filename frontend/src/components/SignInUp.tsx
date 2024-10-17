@@ -110,7 +110,7 @@ const SignInUp: React.FC<SignInUpProps> = ({ mode }) => {
               )}
               <Button
                 type="submit"
-                className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                className="w-full py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
               >
                 {isSignIn ? "Sign In" : "Sign Up"}
               </Button>

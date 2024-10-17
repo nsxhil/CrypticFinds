@@ -350,7 +350,7 @@ router.get('/user', auth, async (req, res) => {
   }
 });
 cron.schedule('* * * * * *', async () => {
-    const updateAllowedTime = new Date("2024-10-18T23:59:59"); // Set the date from when updates should start
+    const updateAllowedTime = new Date("2024-10-17T23:45:00"); // Set the date from when updates should start
     const currentDateTime = new Date();
     const endTime = new Date(); // End time is the current time when the cron job runs
 
