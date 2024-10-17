@@ -110,6 +110,7 @@ router.get('/getalluser', async (req, res) => {
                     score: -1, // Sort by score in descending order
                     timeTaken: 1 // Sort by timeTaken in ascending order
                 }
+
             },
 
                 {
@@ -118,7 +119,8 @@ router.get('/getalluser', async (req, res) => {
             
         ]);
 
-        console.log(usersData);
+        // console.log(usersData);
+        
         res.status(200).json(usersData);
     } catch (err) {
         console.error("Error in getting data", err);
