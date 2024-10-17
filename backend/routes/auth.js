@@ -110,7 +110,12 @@ router.get('/getalluser', async (req, res) => {
                     score: -1, // Sort by score in descending order
                     timeTaken: 1 // Sort by timeTaken in ascending order
                 }
-            }
+            },
+
+                {
+                    $limit: 10  // Limit the result to the top 10 users
+                }
+            
         ]);
 
         console.log(usersData);
