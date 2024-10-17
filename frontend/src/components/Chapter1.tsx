@@ -267,7 +267,7 @@ const Chapter1: React.FC = () => {
       case "start":
         return (
           <div className="flex justify-center items-center">
-            <Card className="max-w-2xl p-2 text-center animate-fadeIn bg-blue-500 bg-opacity-100 bg-[url('scroll.png')]">
+            <Card className="max-w-2xl p-2 text-center animate-fadeIn bg-blue-500 bg-opacity-100 bg-[url('/scroll.png')]">
               <CardTitle className="text-3xl">
                 Chapter 1: Gates at Dwarka
               </CardTitle>
@@ -348,7 +348,7 @@ const Chapter1: React.FC = () => {
       case "choosebranch":
         return (
           <div className="flex justify-center items-center">
-            <Card className="max-w-2xl p-2 text-center animate-fadeIn bg-blue-500 bg-opacity-100 bg-[url('scifi.png')] bg-cover bg-center">
+            <Card className="max-w-2xl p-2 text-center animate-fadeIn bg-blue-500 bg-opacity-100 bg-[url('/scifi.png')] bg-cover bg-center">
               <CardTitle className="text-2xl text-white">
                 Choose your destiny.
               </CardTitle>
@@ -398,7 +398,7 @@ const Chapter1: React.FC = () => {
       case "merging":
         return (
           <div className="flex justify-center items-center">
-            <Card className="max-w-2xl  text-center animate-fadeIn  bg-opacity-100 bg-[url('merging.webp')] p-10">
+            <Card className="max-w-2xl  text-center animate-fadeIn  bg-opacity-100 bg-[url('/merging.webp')] p-10">
               <CardTitle className="text-3xl text-white">
                 Merging Both the worlds
               </CardTitle>
