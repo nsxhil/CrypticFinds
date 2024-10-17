@@ -72,6 +72,6 @@ export default {
   		}
   	}
   },
-  plugins: [require('tailwind-scrollbar-hide','tailwind-animate')],
+  plugins: [require('tailwind-scrollbar'),require('tailwind-scrollbar-hide','tailwind-animate')],
 }
 

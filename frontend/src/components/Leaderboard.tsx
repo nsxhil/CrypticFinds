@@ -55,13 +55,13 @@ const Leaderboard: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <Card className={cn("max-w-md w-full")}>
+      <Card className={cn("max-w-md w-full ")}>
         <CardHeader>
           <CardTitle className="text-2xl">Global Leaderboard</CardTitle>
           <CardDescription>Top scores from all players</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="max-h-[300px] overflow-y-auto">
+          <div className="max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400/30 scrollbar-track-transparent">
             <Table>
               <TableHeader>
                 <TableRow>
