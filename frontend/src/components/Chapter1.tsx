@@ -43,6 +43,7 @@ const currentD = new Date();
 const Chapter1: React.FC = () => {
   const { user, updateUser, updateStartTime, updateTimeTaken } = useAuth();
   const [answer, setAnswer] = useState<string>("");
+  const [Buttonvalue, setButtonvalue] = useState<string>("Submit Answer");
   const [elapsedTime, setElapsedTime] = useState<string>("Loading...");
   const [showError, setShowError] = useState<boolean>(false);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -169,6 +170,8 @@ const Chapter1: React.FC = () => {
   };
 
   const checkAnswer = async () => {
+    setButtonvalue("Checking...");
+
     try {
       const response = await axios.post(`${API_URL}/api/questions/checkans`, {
         questionId: questions[Number(user?.questionNo) || 0]?.questionID,
@@ -176,6 +179,7 @@ const Chapter1: React.FC = () => {
         gameState: user?.currentState,
       });
 
+      setButtonvalue("Submit Answer");
       if (response.data.correct) {
         const newScore = (parseInt(user?.score || "0") + 1).toString();
         const nextQuestionIndex = (
@@ -334,7 +338,7 @@ const Chapter1: React.FC = () => {
               </CardContent>
               <CardFooter className="flex justify-between">
                 <div className="font-semibold">Score: {user.score}</div>
-                <Button onClick={checkAnswer}>Submit Answer</Button>
+                <Button onClick={checkAnswer}>{Buttonvalue}</Button>
               </CardFooter>
             </Card>
           </div>
