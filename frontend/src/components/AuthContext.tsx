@@ -27,7 +27,8 @@ interface AuthContextType {
   updateUser: (
     score: string,
     questionNo: string,
-    currentState: string
+    currentState: string,
+    startTime: Date
   ) => Promise<boolean>;
   updateStartTime: (startTime: Date) => Promise<boolean>;
   updateTimeTaken: (timeTaken: number) => Promise<boolean>;
@@ -147,7 +148,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const updateUser = async (
     score: string,
     questionNo: string,
-    currentState: string
+    currentState: string,
+    startTime: Date
   ) => {
     try {
       if (!user) {
@@ -159,6 +161,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         score,
         questionNo,
         currentState,
+        startTime,
       });
 
       const updatedUser = response.data.user;

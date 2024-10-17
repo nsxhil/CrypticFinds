@@ -38,6 +38,7 @@ interface Question {
   answer: string;
   hint: string;
 }
+const currentD = new Date();
 
 const Chapter1: React.FC = () => {
   const { user, updateUser, updateStartTime, updateTimeTaken } = useAuth();
@@ -89,7 +90,8 @@ const Chapter1: React.FC = () => {
             updateUser(
               `${user?.score || "0"}`,
               `${user?.questionNo || "0"}`,
-              "merge"
+              "merge",
+              user?.startTime || currentD
             );
           }, 4000);
           return () => clearTimeout(timer);
@@ -152,7 +154,12 @@ const Chapter1: React.FC = () => {
       setElapsedTime(formattedTime);
 
       if (user?.currentState === "start") {
-        updateUser(`${user.score || "0"}`, `${user.questionNo || "0"}`, "ch0");
+        updateUser(
+          `${user.score || "0"}`,
+          `${user.questionNo || "0"}`,
+          "ch0",
+          user?.startTime || currentDateTime
+        );
       }
     } else {
       alert(
@@ -176,26 +183,32 @@ const Chapter1: React.FC = () => {
         ).toString();
 
         setShowError(false);
-        setIsUpdating(true); // Set update state to true
+        setIsUpdating(true);
         setTimeout(() => {
           if (parseInt(nextQuestionIndex) < questions.length) {
             updateUser(
               newScore,
               nextQuestionIndex,
-              user?.currentState || "start"
+              user?.currentState || "start",
+              user?.startTime || currentD
             );
             setAnswer("");
           } else {
             if (user?.currentState === "ch0") {
               setAnswer("");
-              updateUser(newScore, "0", "choosebranch");
+              updateUser(
+                newScore,
+                "0",
+                "choosebranch",
+                user?.startTime || currentD
+              );
             } else if (
               user?.currentState === "land" ||
               user?.currentState === "space"
             ) {
-              updateUser(newScore, "0", "merging");
+              updateUser(newScore, "0", "merging", user?.startTime || currentD);
             } else if (user?.currentState === "merge") {
-              updateUser(newScore, "0", "end");
+              updateUser(newScore, "0", "end", user?.startTime || currentD);
               const endtime = new Date();
               const starttime = new Date(user?.startTime ? user.startTime : 0);
               const timeTakenInMilliseconds =
@@ -216,7 +229,12 @@ const Chapter1: React.FC = () => {
   };
 
   const handleSelection = (branch: GameState) => {
-    updateUser(`${user?.score || "0"}`, "0", branch);
+    updateUser(
+      `${user?.score || "0"}`,
+      "0",
+      branch,
+      user?.startTime || currentD
+    );
   };
 
   const renderContent = () => {

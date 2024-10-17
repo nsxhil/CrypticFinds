@@ -171,7 +171,7 @@ router.post('/updateTimeTaken', async (req, res) => {
 
 
 router.post('/updateuser', async (req, res) => {
-    const { username, score, questionNo, currentState } = req.body;
+    const { username, score, questionNo, currentState ,startTime } = req.body;
 
     try {
         // Find the user by username
@@ -185,6 +185,7 @@ router.post('/updateuser', async (req, res) => {
         if (score !== undefined) user.score = score;
         if (questionNo !== undefined) user.questionNo = questionNo;
         if (currentState !== undefined) user.currentState = currentState;
+        if (startTime !== undefined) user.startTime = startTime;
 
         // Save the updated user document
         await user.save();
