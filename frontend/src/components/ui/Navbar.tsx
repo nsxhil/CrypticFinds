@@ -8,13 +8,17 @@ import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+interface CompProps{
+  scrollTo? : () => void;
+}
+
 interface NavbarClass {
   backgroundColor: string;
   padding: string;
   textColor: string;
 }
 
-const Navbar: React.FC = ({ ...props }) => {
+const Navbar: React.FC<CompProps> = ({ ...props }) => {
   const [navbarClass, setNavbarClass] = useState<NavbarClass>({
     backgroundColor: "bg-transparent",
     padding: "py-6",

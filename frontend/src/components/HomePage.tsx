@@ -99,20 +99,13 @@ const HomePage: React.FC = () => {
           About Us
         </h2>
         <h6 className="text-lg text-white text-center">
-          Welcome to Scavenger Hunt 2023 by Cryptonite, a thrilling amalgamation
-          of puzzles, riddles, and captivating storylines. Founded by a
-          passionate group of individuals at ACM with a penchant for cyber
-          mysteries and adventures, our event provides a unique platform for
-          participants to explore and challenge their intellect. This year's
-          theme, “Space-Time Travel Mystery,” promises a stellar experience that
-          will take our participants on an unprecedented voyage through the
-          cosmos, from the distant future to unknown realms, all the while
-          battling challenges that will test their acumen and mettle. Our
-          collaboration with MAHE-ISAC Centre of Excellence for Cybersecurity
-          and support from leading experts in the industry, has allowed us to
-          craft an experience that's not just a game, but a comprehensive
-          journey through the intricacies of cybersecurity, encryption, and
-          logical deduction.
+        Step into a world where technology reigns supreme and humanity struggles for survival in a dystopian cyberpunk universe.
+        In Cryptic Finds, hosted by ACM, participants will embark on a thrilling journey through the neon-lit streets of a crumbling metropolis, where information is power and secrets are currency.
+        As a member of a rebel faction fighting against an oppressive regime, your mission is to uncover hidden truths and solve cryptic puzzles that will guide you through a complex narrative filled with unexpected twists.
+         Each question you solve unlocks new chapters in the storyline, revealing dark conspiracies, underground alliances, and the fate of a society on the brink of collapse.
+         Join forces with fellow participants as you navigate through immersive environments, decipher intricate codes, and make critical decisions that will influence the outcome of your adventure. 
+         Will you rise to become the hero of the rebellion, or will you succumb to the shadows of the city? 
+         Prepare for an experience that combines teamwork, strategy, and problem-solving in a captivating cyberpunk setting. The future of this world lies in your hands—can you crack the codes and unveil the mysteries of Cryptic Finds?
         </h6>
 
         {/* Information Sections */}

@@ -23,7 +23,7 @@ export default function AccountPage() {
     }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-blue-950/40 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="flex flex-col items-center space-y-4">
           <Avatar className="w-24 h-24">
@@ -33,7 +33,7 @@ export default function AccountPage() {
           <div className="text-center">
             <CardTitle className="text-2xl font-bold">{profile.username}</CardTitle>
             <Badge variant="secondary" className="mt-2">
-              <User className="w-4 h-4 mr-1" />
+              <User className="w-4 h-6 mr-1 bg-" />
               {profile.email}
             </Badge>
           </div>

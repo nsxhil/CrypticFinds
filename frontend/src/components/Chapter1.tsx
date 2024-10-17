@@ -65,7 +65,7 @@ const Chapter1: React.FC = () => {
   const backgroundImages: { [key in GameState]: string } = {
     start: "url('/img.webp')",
     ch0: "url('/img.webp')",
-    choosebranch: "url('/image.webp')",
+    choosebranch: "url('/redditwallpaper.jpg')",
     space: "url('/bg1.webp')",
     land: "url('/bg5.webp')",
     merge: "url('/bg_final.webp')",
@@ -343,15 +343,25 @@ const Chapter1: React.FC = () => {
         );
       case "choosebranch":
         return (
-          <div className="min-h-screen bg-transparent text-white flex flex-col items-center justify-center p-4">
-            <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center">
-              Choose Your Destiny
-            </h1>
+          <div className="min-h-screen  text-white flex flex-col items-center justify-center p-4 gap-3">
+            <h1 className="mb-10 font-bold">Choose your destiny.</h1>
+            <div className="text-xl md:text-xl font-light mb-10 text-justify w-[70%]">
+            As you stand at the crossroads of destiny, two paths unfold before you, each leading to a journey unlike any other.
+              To your left, the cosmos beckons. The vastness of space stretches out, shimmering with stars and the unknown. 
+              Here, you'll soar through galaxies, navigate asteroid fields, and perhaps even encounter alien civilizations. 
+              The silence of the stars is both eerie and beautiful, promising mysteries that only the bravest dare to unravel. 
+              The infinite possibilities of new worlds, forgotten relics of ancient species, and the thrill of exploring the final frontier await.
+              To your right, the pulse of the city calls. Streets illuminated by the neon glow, bustling with life, offer secrets hidden in the shadows. 
+              The city's skyline is a maze of towering skyscrapers, each with its own story.
+               Every corner promises a new adventure—unraveling underground conspiracies, making unlikely alliances, or chasing down a lead in a high-speed chase. 
+               The rhythm of the metropolis, the hum of technology, and the energy of a city that never sleeps push you to explore its many layers. 
+               Which path will you choose: the boundless expanse of space or the vibrant, unpredictable city?
+            </div>
             <div className="flex flex-col md:flex-row gap-8 ">
               <BranchOption
                 title="Land"
                 icon={<Globe className="w-16 h-16 mb-4" />}
-                description="Stay on land"
+                description="Stay in city"
                 onClick={() => handleSelection("land")}
               />
               <BranchOption
@@ -420,15 +430,15 @@ const Chapter1: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen w-screen relative flex flex-col items-center justify-center p-4"
+      className=" min-h-screen w-screen relative flex flex-col items-center justify-center p-4"
       style={{
         backgroundImage: backgroundImages[gameState],
         backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundPosition: "center", 
       }}
     >
       <div className="relative z-10 w-full flex flex-col items-center">
-        <Navbar />
+        <Navbar  />
         {renderContent()}
       </div>
     </div>
