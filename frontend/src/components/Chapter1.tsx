@@ -140,7 +140,7 @@ const Chapter1: React.FC = () => {
     return () => clearInterval(intervalId);
   }, [user?.startTime]);
 
-  console.log(user);
+  // console.log(user);
   const startGame = () => {
     const currentDateTime = new Date();
     const accessStartTime = new Date("2024-10-18T00:00:00");
