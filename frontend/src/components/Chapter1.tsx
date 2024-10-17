@@ -343,7 +343,9 @@ const Chapter1: React.FC = () => {
             </Card>
           </div>
         ) : (
-          <p>Loading questions...</p>
+          <div className="flex justify-center">
+            <p className="text-white font-bold">Loading questions...</p>
+          </div>
         );
       case "choosebranch":
         return (
