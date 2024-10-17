@@ -184,12 +184,13 @@ router.post('/updateuser', async (req, res) => {
         // Find the user by username
         const user = await User.findOne({ username });
 
+
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
         // Update the user's score, questionNo, and currentState if they are provided
-        if (score !== undefined) user.score = score;
+        if (score !== undefined ) user.score = user.score +1;
         if (questionNo !== undefined) user.questionNo = questionNo;
         if (currentState !== undefined) user.currentState = currentState;
         if (startTime !== undefined) user.startTime = startTime;
