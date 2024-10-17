@@ -52,7 +52,7 @@ const App: React.FC = () => {
               element={<PrivateRoute element={<Chapter1 />} />}
             />
             <Route
-              path="/leaderboard"
+              path="/abcd1234"
               element={<PrivateRoute element={<Leaderboard />} />}
             />
             <Route
