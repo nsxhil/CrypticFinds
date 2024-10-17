@@ -133,7 +133,7 @@ router.post('/updateStartTime', async (req, res) => {
         }
 
         // Update the startTime
-        user.startTime = startTime;
+        if (startTime !== undefined) user.startTime = startTime;
 
         await user.save();
 

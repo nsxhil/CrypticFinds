@@ -8,7 +8,6 @@ const {Question, branch1, chapterqs, landq} = require('../models/Questions');
 router.get('/ch0', async (req, res) => {
   try {
     const questions = await Question.find().select('-answer -hint').sort({ questionID: 1 });
-    console.log('Fetched questions:', questions);
     res.json(questions);
   } catch (error) {
     console.error('Error fetching questions:', error);
@@ -19,7 +18,6 @@ router.get('/ch0', async (req, res) => {
 router.get('/branch1', async (req, res) => {
   try {
     const questions = await branch1.find().select('-answer -hint').sort({ questionID: 1 });
-    console.log('Fetched questions:', questions);
     res.json(questions);
   } catch (error) {
     console.error('Error fetching questions: o no', error);
@@ -29,7 +27,6 @@ router.get('/branch1', async (req, res) => {
 router.get('/landqs', async (req, res) => {
   try {
     const questions = await landq.find().select('-answer -hint').sort({ questionID: 1 });
-    console.log('Fetched questions lands:', questions);
     res.json(questions);
   } catch (error) {
     console.error('Error fetching questions: o no', error);

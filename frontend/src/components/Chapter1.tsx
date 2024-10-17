@@ -61,7 +61,9 @@ const Chapter1: React.FC = () => {
   };
   type BackgroundState = keyof typeof backgroundImages;
   const elapsedTimeClass =
-    user?.currentState === "space" ? "text-yellow-400" : "text-gray-100";
+    user?.currentState === "space"
+      ? "text-yellow-400 bg-black rounded p-2"
+      : "text-gray-100";
 
   // Fetch questions on initial load
   useEffect(() => {
@@ -82,13 +84,14 @@ const Chapter1: React.FC = () => {
           );
           setQuestions(landResponse.data);
         } else if (currentState === "merging") {
+          setAnswer("");
           const timer = setTimeout(() => {
             updateUser(
               `${user?.score || "0"}`,
               `${user?.questionNo || "0"}`,
               "merge"
             );
-          }, 2000);
+          }, 4000);
           return () => clearTimeout(timer);
         } else if (currentState === "merge") {
           const chapterResponse = await axios.get(
@@ -134,6 +137,7 @@ const Chapter1: React.FC = () => {
     return () => clearInterval(intervalId);
   }, [user?.startTime]);
 
+  console.log(user);
   const startGame = () => {
     const currentDateTime = new Date();
     const accessStartTime = new Date("2024-10-15T09:00:00");
@@ -383,7 +387,7 @@ const Chapter1: React.FC = () => {
                 </p>
               </CardContent>
               <CardFooter className="flex justify-center gap-5">
-                <p>Loading ...</p>
+                <p className="text-bold text-white">Loading ...</p>
               </CardFooter>
             </Card>
           </div>
@@ -413,7 +417,11 @@ const Chapter1: React.FC = () => {
           </div>
         );
       default:
-        return <p>Unknown state</p>;
+        return (
+          <div className="flex justify-center items-center">
+            <p className="text-white text-5xl">Unknown state</p>
+          </div>
+        );
     }
   };
 

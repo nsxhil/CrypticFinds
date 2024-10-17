@@ -116,42 +116,42 @@ const HomePage: React.FC = () => {
         </h6>
 
         {/* Information Sections */}
-        <div className="flex flex-col md:flex-row gap-8 mt-[20vh]">
-          <div className="flex-1 text-center justify-center">
-            <h3 className="text-2xl font-semibold mt-4 text-white">
-              MAHE-ISAC CoE for Cybersecurity
-            </h3>
-            <p className="text-white mt-2">
-              The Centre of Excellence for Cybersecurity at the Manipal
-              Institute of Technology is a beacon of knowledge and innovation in
-              the realm of cybersecurity. With state-of-the-art facilities, it
-              is dedicated to fostering research, development, and awareness in
-              the ever-evolving domain of digital safety. Under the esteemed
-              guidance of Dr. Balachandra, the Centre aims to empower students,
-              professionals, and the community at large with the tools and
-              knowledge to navigate the digital world securely.
-            </p>
-          </div>
+      </div>
+      <div
+        id="about"
+        className="container mx-auto py-16 bg-[#000021]"
+        ref={aboutRef}
+      >
+        <h2 className="text-4xl font-bold text-center mb-6 text-white">
+          Rules
+        </h2>
+        <h6 className="text-lg text-white ">
+          1. Cryptic Finds is a 24-hour online event. <br />
+          2. There is no time limit per question. <br />
+          3. Any attempt to tamper with the game will lead to immediate
+          disqualification. <br />
+          4. The event starts on 18th October, 00:00, and ends on 18th October,
+          23:59. <br />
+          5. At each level, you will be given a problem statement and some
+          resources, either directly or indirectly. You must use these to find
+          the answers and move ahead in the storyline. <br />
+          6. Use '_' in place of spaces in the answers. <br />
+          7. Answers must be written in lowercase only. <br />
+          8. The winners will be decided by the number of questions they have
+          solved, i.e., their progress in the storyline. <br />
+          9. In case of a tie, the time taken to reach the tied score will be
+          compared. <br />
+          10. Organizers reserve the right to make any modifications to better
+          the event; important updates will be duly informed to the
+          participants. <br />
+          11. Any violations, such as cheating of any sort, will lead to
+          immediate disqualification. Publishing any flag online is absolutely
+          forbidden. <br />
+          12. In case of any queries, feel free to reach out to us in the
+          Cryptic Finds WhatsApp group.
+        </h6>
 
-          <div className="flex-1 text-center">
-            <h3 className="text-2xl font-semibold mt-4 text-white">
-              Cryptonite
-            </h3>
-            <p className="text-white mt-2">
-              Cryptonite is the official ethical hacking and cybersecurity team
-              at Manipal Institute of Technology. With a vast range of expertise
-              from cryptography to reverse engineering, they've carved a niche
-              for themselves on the global stage, achieving commendable
-              positions in CTF rankings. Under the proficient guidance of Mrs.
-              Nisha P Shetty, their endeavors have consistently been shaped and
-              steered towards excellence. Their forthcoming "Cryptober" event
-              showcases their dedication to cybersecurity education, offering
-              enlightening talks, riveting competitions, and intricate
-              challenges. As the digital world evolves, Cryptonite champions the
-              cause of a secure and informed future.
-            </p>
-          </div>
-        </div>
+        {/* Information Sections */}
       </div>
       <Footer />
     </div>

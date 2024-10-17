@@ -47,7 +47,7 @@ const SignInUp: React.FC<SignInUpProps> = ({ mode }) => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black p-6">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -56,7 +56,7 @@ const SignInUp: React.FC<SignInUpProps> = ({ mode }) => {
       >
         <Card className="w-full">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold text-white">
+            <CardTitle className="text-2xl font-bold mb-2">
               {isSignIn ? "Welcome Back!" : "Create Account"}
             </CardTitle>
             <CardDescription className="text-gray-700">

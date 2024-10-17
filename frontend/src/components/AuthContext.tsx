@@ -179,11 +179,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       const response = await axios.post(`${API_URL}/api/auth/updateStartTime`, {
         username: user.username,
-        startTime,
+        startTime: startTime,
       });
-
+      console.log(user);
       const updatedUser = response.data.user;
       setUser(updatedUser);
+      console.log(user);
       localStorage.setItem("user", JSON.stringify(updatedUser));
       return true;
     } catch (error) {
