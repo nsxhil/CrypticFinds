@@ -1,4 +1,6 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+// import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useContext} from "react";
+
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -41,30 +43,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      axios
-        .get(`${API_URL}/api/auth/verify`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((response) => {
-          if (response.data.valid) {
-            const storedUser = localStorage.getItem("user");
-            if (storedUser) {
-              setUser(JSON.parse(storedUser));
-            }
-          } else {
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-          }
-        })
-        .catch(() => {
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
-        });
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     axios
+  //       .get(`${API_URL}/api/auth/verify`, {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       })
+  //       .then((response) => {
+  //         if (response.data.valid) {
+  //           const storedUser = localStorage.getItem("user");
+  //           if (storedUser) {
+  //             setUser(JSON.parse(storedUser));
+  //           }
+  //         } else {
+  //           localStorage.removeItem("token");
+  //           localStorage.removeItem("user");
+  //         }
+  //       })
+  //       .catch(() => {
+  //         localStorage.removeItem("token");
+  //         localStorage.removeItem("user");
+  //       });
+  //   }
+  // }, []);
 
   const signIn = async (username: string, password: string) => {
     try {
