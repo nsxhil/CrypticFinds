@@ -34,6 +34,7 @@ const App: React.FC = () => {
         <div className="w-screen min-h-screen bg-[#000021] items-center">
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/1234ab" element={<Leaderboard />} />
             <Route
               path="/signin"
               element={<PublicRoute element={<SignInUp mode="signin" />} />}
@@ -51,10 +52,11 @@ const App: React.FC = () => {
               path="/chapter1"
               element={<PrivateRoute element={<Chapter1 />} />}
             />
-            <Route
+            {/* <Route
               path="/abcd1234"
               element={<PrivateRoute element={<Leaderboard />} />}
-            />
+            /> */}
+            
             <Route
               path="/account"
               element={<PrivateRoute element={<AccountPage />} />}
