@@ -3,7 +3,6 @@ import { Typewriter } from "react-simple-typewriter";
 
 const TypingEffect: React.FC = () => {
   const [showTypewriter, setShowTypewriter] = useState(false);
-  const [typingDone, setTypingDone] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {

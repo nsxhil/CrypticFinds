@@ -1,7 +1,5 @@
-import React, { Suspense, useRef } from "react";
-import { Link, Navigate } from "react-router-dom";
-import { Canvas, useFrame } from "@react-three/fiber";
-import Earth from "../../public/Earth"; // Adjust path as necessary
+import React, { useRef } from "react";
+import { Link, Navigate } from "react-router-dom"; // Adjust path as necessary
 import Navbar from "./ui/Navbar";
 
 import { useAuth } from "./AuthContext";
@@ -30,8 +28,6 @@ import Footer from "./Footer";
 
 const HomePage: React.FC = () => {
   const { user } = useAuth();
-  const [mouseX, setMouseX] = React.useState(0);
-  const [mouseY, setMouseY] = React.useState(0);
   const aboutRef = useRef<HTMLDivElement | null>(null);
 
   const scrollOnClick = (): void => {
@@ -99,13 +95,24 @@ const HomePage: React.FC = () => {
           About Us
         </h2>
         <h6 className="text-lg text-white text-center">
-        Step into a world where technology reigns supreme and humanity struggles for survival in a dystopian cyberpunk universe.
-        In Cryptic Finds, hosted by ACM, participants will embark on a thrilling journey through the neon-lit streets of a crumbling metropolis, where information is power and secrets are currency.
-        As a member of a rebel faction fighting against an oppressive regime, your mission is to uncover hidden truths and solve cryptic puzzles that will guide you through a complex narrative filled with unexpected twists.
-         Each question you solve unlocks new chapters in the storyline, revealing dark conspiracies, underground alliances, and the fate of a society on the brink of collapse.
-         Join forces with fellow participants as you navigate through immersive environments, decipher intricate codes, and make critical decisions that will influence the outcome of your adventure. 
-         Will you rise to become the hero of the rebellion, or will you succumb to the shadows of the city? 
-         Prepare for an experience that combines teamwork, strategy, and problem-solving in a captivating cyberpunk setting. The future of this world lies in your hands—can you crack the codes and unveil the mysteries of Cryptic Finds?
+          Step into a world where technology reigns supreme and humanity
+          struggles for survival in a dystopian cyberpunk universe. In Cryptic
+          Finds, hosted by ACM, participants will embark on a thrilling journey
+          through the neon-lit streets of a crumbling metropolis, where
+          information is power and secrets are currency. As a member of a rebel
+          faction fighting against an oppressive regime, your mission is to
+          uncover hidden truths and solve cryptic puzzles that will guide you
+          through a complex narrative filled with unexpected twists. Each
+          question you solve unlocks new chapters in the storyline, revealing
+          dark conspiracies, underground alliances, and the fate of a society on
+          the brink of collapse. Join forces with fellow participants as you
+          navigate through immersive environments, decipher intricate codes, and
+          make critical decisions that will influence the outcome of your
+          adventure. Will you rise to become the hero of the rebellion, or will
+          you succumb to the shadows of the city? Prepare for an experience that
+          combines teamwork, strategy, and problem-solving in a captivating
+          cyberpunk setting. The future of this world lies in your hands—can you
+          crack the codes and unveil the mysteries of Cryptic Finds?
         </h6>
 
         {/* Information Sections */}

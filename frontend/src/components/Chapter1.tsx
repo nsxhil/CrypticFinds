@@ -59,7 +59,7 @@ const Chapter1: React.FC = () => {
     congrats: "url('/backgrounds/congrats-bg.webp')",
     end: "url('/backgrounds/end-bg.webp')",
   };
-
+  type BackgroundState = keyof typeof backgroundImages;
   const elapsedTimeClass =
     user?.currentState === "space" ? "text-yellow-400" : "text-gray-100";
 
@@ -421,7 +421,9 @@ const Chapter1: React.FC = () => {
     <div
       className="min-h-screen flex items-center justify-center"
       style={{
-        backgroundImage: backgroundImages[user?.currentState || "start"],
+        backgroundImage: user?.currentState
+          ? backgroundImages[user?.currentState as BackgroundState]
+          : backgroundImages["start"],
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

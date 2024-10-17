@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from "react";
 // import { FaSearch, FaTimes } from "react-icons/fa";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../AuthContext";
-import axios from "axios";
 
-
-
-const API_URL = import.meta.env.VITE_API_URL;
-
-interface CompProps{
-  scrollTo? : () => void;
+interface CompProps {
+  scrollTo?: () => void;
 }
 
 interface NavbarClass {
@@ -24,37 +19,28 @@ const Navbar: React.FC<CompProps> = ({ ...props }) => {
     padding: "py-6",
     textColor: "text-white",
   });
-  const [menuOpen, setMenuOpen] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
-  const [name, setName] = useState([]);
-  const navigate = useNavigate();
   const { user, signOut } = useAuth();
 
-  const url = useLocation()
-
-  const Logout = async () => {
-    window.localStorage.setItem("user", "null");
-    navigate("/login");
-  };
+  const url = useLocation();
 
   const toggleAccountMenu = () => {
     setShowAccountMenu(!showAccountMenu);
   };
 
   useEffect(() => {
-    
     const changeNavbarOnScroll = () => {
       if (window.scrollY >= 80) {
         setNavbarClass({
-          backgroundColor: "bg-white dark:bg-black", 
+          backgroundColor: "bg-white dark:bg-black",
           padding: "py-1",
-          textColor: "text-black", 
+          textColor: "text-black",
         });
       } else {
         setNavbarClass({
-          backgroundColor: "bg-transparent", 
+          backgroundColor: "bg-transparent",
           padding: "py-3",
-          textColor: "text-white", 
+          textColor: "text-white",
         });
       }
     };
@@ -71,17 +57,11 @@ const Navbar: React.FC<CompProps> = ({ ...props }) => {
     if (user) {
       const fetchUserData = async () => {
         try {
-          const token = localStorage.getItem('token');
+          const token = localStorage.getItem("token");
           if (!token) {
             console.error("No token found");
             return;
           }
-          const response = await axios.get(`${API_URL}/api/auth/user`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-          setName(response.data.username);
         } catch (err) {
           console.error("Error fetching user data:", err);
         }
@@ -104,14 +84,18 @@ const Navbar: React.FC<CompProps> = ({ ...props }) => {
         </Link>
 
         <div className="flex items-center">
-          {url.pathname == '/' ? (           <div
-            className={`${navbarClass.textColor} px-2 hover:text-[#1fd1ff] hover:cursor-pointer transition-all duration-500`}
-            onClick={props.scrollTo}
-          >
-            {" "}
-            About Us{" "}
-          </div>) : (<></>) }
-          
+          {url.pathname == "/" ? (
+            <div
+              className={`${navbarClass.textColor} px-2 hover:text-[#1fd1ff] hover:cursor-pointer transition-all duration-500`}
+              onClick={props.scrollTo}
+            >
+              {" "}
+              About Us{" "}
+            </div>
+          ) : (
+            <></>
+          )}
+
           {/* <div
             className={`${navbarClass.textColor} px-2 hover:text-[#1fd1ff] hover:cursor-pointer transition-all duration-500`}
             onClick={props.scrollTo}
@@ -119,7 +103,6 @@ const Navbar: React.FC<CompProps> = ({ ...props }) => {
             {" "}
             About Us{" "}
           </div> */}
-
 
           {user ? (
             <>
