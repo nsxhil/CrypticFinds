@@ -190,7 +190,7 @@ router.post('/updateuser', async (req, res) => {
         }
 
         // Update the user's score, questionNo, and currentState if they are provided
-        if (score !== undefined ) user.score = user.score +1;
+        if (score !== undefined & user.score+1 === score ) user.score = score;
         if (questionNo !== undefined) user.questionNo = questionNo;
         if (currentState !== undefined) user.currentState = currentState;
         if (startTime !== undefined) user.startTime = startTime;
