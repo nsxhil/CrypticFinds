@@ -9,8 +9,8 @@ require('dotenv').config();
 const https = require('https');
 
 const app = express();
-// const PORT = 443
-const PORT = process.env.PORT || 5000;
+const PORT = 443
+// const PORT = process.env.PORT || 5000;
 
 app.use(cors({
   origin: true, 
@@ -31,9 +31,9 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
         process.exit(1);
     });
 
-app.listen(PORT, () => {
-   console.log(`Server running on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//    console.log(`Server running on port ${PORT}`);
+// });
 
 // Keep-alive route
 // app.get('/keep-alive', (req, res) => {
@@ -51,12 +51,12 @@ app.listen(PORT, () => {
 
 // setInterval(keepAlive, keepAliveInterval);
 
-// const options = {
-//   cert: fs.readFileSync('/etc/letsencrypt/live/backend.crypticfinds.live/fullchain.pem'),
-//   key: fs.readFileSync('/etc/letsencrypt/live/backend.crypticfinds.live/privkey.pem')
-// };
+const options = {
+  cert: fs.readFileSync('/etc/letsencrypt/live/backend.crypticfinds.live/fullchain.pem'),
+  key: fs.readFileSync('/etc/letsencrypt/live/backend.crypticfinds.live/privkey.pem')
+};
 
-// https.createServer(options, app).listen(PORT);
+https.createServer(options, app).listen(PORT);
 
 console.log('EMAIL_USER:', process.env.EMAIL_USER);
 console.log('EMAIL_PASS:', process.env.EMAIL_PASS);
