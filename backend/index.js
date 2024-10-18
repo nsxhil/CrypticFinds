@@ -58,6 +58,14 @@ app.listen(PORT, () => {
 
 // https.createServer(options, app).listen(PORT);
 
+console.log('EMAIL_USER:', process.env.EMAIL_USER);
+console.log('EMAIL_PASS:', process.env.EMAIL_PASS);
+console.log('FRONTEND_URL:', process.env.FRONTEND_URL);
+
+
+
+
+
 
 
 

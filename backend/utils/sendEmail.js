@@ -14,8 +14,6 @@ const sendEmail = async (options) => {
             rejectUnauthorized: false // pls future lakshay, remove in production
         }
     });
-
-   
     const mailOptions = {
         from: process.env.EMAIL_FROM,
         to: options.to,

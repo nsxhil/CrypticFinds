@@ -12,6 +12,7 @@ import Leaderboard from "./components/Leaderboard";
 import HomePage from "./components/HomePage";
 import AccountPage from "./components/AccountPage";
 import Chapter1 from "./components/Chapter1";
+import EmailVerification from './components/EmailVerification';
 
 const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({
   element,
@@ -61,6 +62,7 @@ const App: React.FC = () => {
               path="/account"
               element={<PrivateRoute element={<AccountPage />} />}
             />
+            <Route path="/verify-email/:token" element={<EmailVerification />} />
           </Routes>
         </div>
       </Router>

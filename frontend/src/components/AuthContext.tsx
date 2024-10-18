@@ -24,7 +24,7 @@ interface AuthContextType {
     email: string,
     phoneNumber: string,
     password: string
-  ) => Promise<boolean>;
+  ) => Promise<{ success: boolean; message: string }>;
   signOut: () => void;
   // updateUser: (
   //   score: string,
@@ -118,26 +118,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         phoneNumber,
         password,
       });
-      const { token } = response.data;
-      localStorage.setItem("token", token);
-      const user = {
-        username,
-        score: "0",
-        questionNo: "0",
-        currentState: "start",
-        email,
-        phoneNumber,
-      };
-      setUser(user);
-      localStorage.setItem("user", JSON.stringify(user));
-      return true;
+      // Instead of setting the user and token, we'll show a message to check email
+      return { success: true, message: response.data.message };
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Signup error:", error.response?.data || error.message);
+        return { success: false, message: error.response?.data?.message || "An error occurred during signup" };
       } else {
         console.error("Signup error:", error);
+        return { success: false, message: "An unexpected error occurred" };
       }
-      return false;
     }
   };
 

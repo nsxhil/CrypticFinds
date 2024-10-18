@@ -6,6 +6,7 @@ const User = require('../models/User');
 const sendEmail = require('../utils/sendEmail');
 const auth = require('../middleware/auth');
 const cron = require('node-cron');
+const { sendVerificationEmail } = require('../utils/emailService');
 
 const router = express.Router();
 
@@ -25,26 +26,57 @@ router.post('/signup', async (req, res) => {
             return res.status(400).json({ message: 'Username or email already exists' });
         }
 
-        // Create user with default values for score, questionNo, currentState, startTime, and timeTaken
+        const verificationToken = crypto.randomBytes(20).toString('hex');
+        const verificationTokenExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
+
         user = new User({
             username,
             email,
             phoneNumber,
             password,
-            score: "0", // Ensure these are strings as per your schema or change the schema to use Number
+            score: "0",
             questionNo: "0",
             currentState: "start",
-            startTime: null, // Initially null, will be set when the quiz starts
-            timeTaken: 0 // Initially 0, will be calculated when the quiz finishes
+            startTime: null,
+            timeTaken: 0,
+            isVerified: false,
+            verificationToken,
+            verificationTokenExpires
         });
 
         await user.save();
+        console.log('User saved with verification token:', verificationToken);
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        console.log('User created successfully:', user);
-        res.status(201).json({ token });
+        await sendVerificationEmail(email, verificationToken);
+
+        res.status(201).json({ message: 'User created. Please check your email to verify your account.' });
     } catch (error) {
         console.error('Signup error:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
+
+// Add a new route for email verification
+router.get('/verify-email/:token', async (req, res) => {
+    try {
+        const { token } = req.params;
+        const user = await User.findOne({
+            verificationToken: token,
+            verificationTokenExpires: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid or expired verification token' });
+        }
+
+        user.isVerified = true;
+        user.verificationToken = undefined;
+        user.verificationTokenExpires = undefined;
+        await user.save();
+
+        res.json({ message: 'Email verified successfully. You can now log in.' });
+    } catch (error) {
+        console.error('Email verification error:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
@@ -57,6 +89,10 @@ router.post('/login', async (req, res) => {
         const user = await User.findOne({ username });
         if (!user) {
             return res.status(401).json({ message: 'Invalid username or password' });
+        }
+
+        if (!user.isVerified) {
+            return res.status(401).json({ message: 'Please verify your email before logging in' });
         }
 
         const isMatch = await user.comparePassword(password);
@@ -82,6 +118,7 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
+
 
 
 router.post('/getuser', async (req, res) => {
