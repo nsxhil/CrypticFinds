@@ -177,34 +177,35 @@ router.post('/updateTimeTaken', async (req, res) => {
 });
 
 
-router.post('/updateuser', async (req, res) => {
-    const { username, score, questionNo, currentState ,startTime } = req.body;
 
-    try {
-        // Find the user by username
-        const user = await User.findOne({ username });
+// router.post('/updateuser', async (req, res) => {
+//     const { username, score, questionNo, currentState ,startTime } = req.body;
+
+//     try {
+//         // Find the user by username
+//         const user = await User.findOne({ username });
 
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
 
-        // Update the user's score, questionNo, and currentState if they are provided
-        if (score !== undefined ) user.score = score;
-        if (questionNo !== undefined) user.questionNo = questionNo;
-        if (currentState !== undefined) user.currentState = currentState;
-        if (startTime !== undefined) user.startTime = startTime;
+//         // Update the user's score, questionNo, and currentState if they are provided
+//         if (score !== undefined ) user.score = score;
+//         if (questionNo !== undefined) user.questionNo = questionNo;
+//         if (currentState !== undefined) user.currentState = currentState;
+//         if (startTime !== undefined) user.startTime = startTime;
 
-        // Save the updated user document
-        await user.save();
+//         // Save the updated user document
+//         await user.save();
 
-        console.log('Updated user data:', user);
-        res.status(200).json({ message: 'User updated successfully', user });
-    } catch (err) {
-        console.error('Error in updating user data:', err);
-        res.status(500).json({ message: 'Error in updating user data', error: err.message });
-    }
-});
+//         console.log('Updated user data:', user);
+//         res.status(200).json({ message: 'User updated successfully', user });
+//     } catch (err) {
+//         console.error('Error in updating user data:', err);
+//         res.status(500).json({ message: 'Error in updating user data', error: err.message });
+//     }
+// });
 
 
 // Forgot Password Route

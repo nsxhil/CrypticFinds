@@ -26,12 +26,12 @@ interface AuthContextType {
     password: string
   ) => Promise<boolean>;
   signOut: () => void;
-  updateUser: (
-    score: string,
-    questionNo: string,
-    currentState: string,
-    startTime: Date
-  ) => Promise<boolean>;
+  // updateUser: (
+  //   score: string,
+  //   questionNo: string,
+  //   currentState: string,
+  //   startTime: Date
+  // ) => Promise<boolean>;
   updateStartTime: (startTime: Date) => Promise<boolean>;
   updateTimeTaken: (timeTaken: number) => Promise<boolean>;
 }
@@ -147,34 +147,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.removeItem("user");
   };
 
-  const updateUser = async (
-    score: string,
-    questionNo: string,
-    currentState: string,
-    startTime: Date
-  ) => {
-    try {
-      if (!user) {
-        throw new Error("User not authenticated");
-      }
+  // const updateUser = async (
+  //   score: string,
+  //   questionNo: string,
+  //   currentState: string,
+  //   startTime: Date
+  // ) => {
+  //   try {
+  //     if (!user) {
+  //       throw new Error("User not authenticated");
+  //     }
 
-      const response = await axios.post(`${API_URL}/api/auth/updateuser`, {
-        username: user.username,
-        score,
-        questionNo,
-        currentState,
-        startTime,
-      });
+  //     const response = await axios.post(`${API_URL}/api/auth/updateuser`, {
+  //       username: user.username,
+  //       score,
+  //       questionNo,
+  //       currentState,
+  //       startTime,
+  //     });
 
-      const updatedUser = response.data.user;
-      setUser(updatedUser);
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      return true;
-    } catch (error) {
-      console.error("Update user error:", error);
-      return false;
-    }
-  };
+  //     const updatedUser = response.data.user;
+  //     setUser(updatedUser);
+  //     localStorage.setItem("user", JSON.stringify(updatedUser));
+  //     return true;
+  //   } catch (error) {
+  //     console.error("Update user error:", error);
+  //     return false;
+  //   }
+  // };
 
   const updateStartTime = async (startTime: Date) => {
     try {
@@ -226,7 +226,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         signIn,
         signUp,
         signOut,
-        updateUser,
+
         updateStartTime,
         updateTimeTaken,
       }}

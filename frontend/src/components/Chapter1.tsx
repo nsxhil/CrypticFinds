@@ -38,15 +38,17 @@ interface Question {
   answer: string;
   hint: string;
 }
-const currentD = new Date();
+// const currentD = new Date();
 
 const Chapter1: React.FC = () => {
-  const { user, updateUser, updateStartTime, updateTimeTaken } = useAuth();
+  const { user} = useAuth();
+  const[score,setCurrentScore]=useState<string>();
   const [answer, setAnswer] = useState<string>("");
+  const [currentState,setCurrentState]=useState<string>();
+  const [currentQuestion,setCurrentQuestion]=useState<Question>()
   const [Buttonvalue, setButtonvalue] = useState<string>("Submit Answer");
   const [elapsedTime, setElapsedTime] = useState<string>("Loading...");
   const [showError, setShowError] = useState<boolean>(false);
-  const [questions, setQuestions] = useState<Question[]>([]);
   const [hint, setHint] = useState<string>("");
   const [isUpdating, setIsUpdating] = useState<boolean>(false); // Track the update process
 
@@ -63,54 +65,12 @@ const Chapter1: React.FC = () => {
   };
   type BackgroundState = keyof typeof backgroundImages;
   const elapsedTimeClass =
-    user?.currentState === "space"
+    currentState === "space"
       ? "text-yellow-400 bg-black rounded p-2"
       : "text-gray-100";
 
   // Fetch questions on initial load
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const currentState = user?.currentState || "start"; // Default to "start" if undefined
-        if (currentState === "ch0") {
-          const response = await axios.get(`${API_URL}/api/questions/ch0`);
-          setQuestions(response.data);
-        } else if (currentState === "space") {
-          const spaceResponse = await axios.get(
-            `${API_URL}/api/questions/branch1`
-          );
-          setQuestions(spaceResponse.data);
-        } else if (currentState === "land") {
-          const landResponse = await axios.get(
-            `${API_URL}/api/questions/landqs`
-          );
-          setQuestions(landResponse.data);
-        } else if (currentState === "merging") {
-          setAnswer("");
-          const timer = setTimeout(() => {
-            updateUser(
-              `${user?.score || "0"}`,
-              `${user?.questionNo || "0"}`,
-              "merge",
-              user?.startTime || currentD
-            );
-          }, 4000);
-          return () => clearTimeout(timer);
-        } else if (currentState === "merge") {
-          const chapterResponse = await axios.get(
-            `${API_URL}/api/questions/chapterqs`
-          );
-          setQuestions(chapterResponse.data);
-        }
-      } catch (error) {
-        console.error("Error fetching questions:", error);
-      }
-    };
-    fetchQuestions();
-  }, [user?.currentState]);
-
-  const currentQuestion =
-    questions[parseInt(user?.questionNo ? user.questionNo : "0")];
+ 
 
   useEffect(() => {
     // Timer for elapsed time
@@ -139,36 +99,84 @@ const Chapter1: React.FC = () => {
 
     return () => clearInterval(intervalId);
   }, [user?.startTime]);
+  useEffect(()=>{
+    setCurrentState(user?.currentState)
+  },[])
+
+  useEffect(()=>{
+    const fetchquestion= async()=>{
+      const response= await axios.post(`${API_URL}/api/questions/question`, {
+        username: user?.username ,
+      });
+      setCurrentQuestion(response.data.question)
+      setCurrentScore(response.data.score)
+      setCurrentState(response.data.currentState)
+    }
+    fetchquestion();
+  },[isUpdating])
+
+  useEffect(()=>{
+    if(currentState==="merging"){
+      setTimeout(()=>{
+        const fetchquestion= async()=>{
+          const response= await axios.post(`${API_URL}/api/questions/merging`, {
+            username: user?.username ,
+          });
+          setCurrentQuestion(response.data.question)
+          setCurrentScore(response.data.score)
+          setCurrentState(response.data.currentState)
+        }
+        fetchquestion();
+
+      },4000)
+
+      
+  
+  }
+  else if (currentState==="merge"){
+    const fetchquestion= async()=>{
+      const response= await axios.post(`${API_URL}/api/questions/question`, {
+        username: user?.username ,
+      });
+      setCurrentQuestion(response.data.question)
+      setCurrentScore(response.data.score)
+      setCurrentState(response.data.currentState)
+    }
+    fetchquestion();
+    
+  }
+  else if (currentState==="end"){
+    const fetchquestion= async()=>{
+      const response= await axios.post(`${API_URL}/api/questions/question`, {
+        username: user?.username ,
+      });
+      setCurrentQuestion(response.data.question)
+      setCurrentScore(response.data.score)
+      setCurrentState(response.data.currentState)
+    }
+    fetchquestion();
+    
+  }
+    
+  },[currentState])
 
   
 
 
-  const startGame = () => {
-    const currentDateTime = new Date();
-    const accessStartTime = new Date("2024-10-18T00:00:00");
-    const accessEndTime = new Date("2024-10-18T23:59:59");
+  const startGame = async () => {
 
-    if (
-      currentDateTime >= accessStartTime &&
-      currentDateTime <= accessEndTime
-    ) {
-      updateStartTime(currentDateTime);
+    await axios.post(`${API_URL}/api/questions/startGame`, {
+      username: user?.username ,
+    });
       const formattedTime = "00:00:00";
       setElapsedTime(formattedTime);
 
-      if (user?.currentState === "start") {
-        updateUser(
-          `${user.score || "0"}`,
-          `${user.questionNo || "0"}`,
-          "ch0",
-          user?.startTime || currentDateTime
-        );
-      }
-    } else {
-      alert(
-        "The game is only accessible between October from 18th October from 00:00 to 23:59"
-      );
-    }
+     const response= await axios.post(`${API_URL}/api/questions/question`, {
+        username: user?.username ,
+      });
+      setCurrentQuestion(response.data.question)
+      setCurrentScore(response.data.score)
+      setCurrentState(response.data.currentState)
   };
 
   const checkAnswer = async () => {
@@ -176,75 +184,94 @@ const Chapter1: React.FC = () => {
 
     try {
       const response = await axios.post(`${API_URL}/api/questions/checkans`, {
-        questionId: questions[Number(user?.questionNo) || 0]?.questionID,
+        username: user?.username ,
         userAnswer: answer,
-        gameState: user?.currentState,
       });
 
-      setButtonvalue("Submit Answer");
-      if (response.data.correct) {
-        const newScore = (parseInt(user?.score || "0") + 1).toString();
-        const nextQuestionIndex = (
-          parseInt(user?.questionNo || "0") + 1
-        ).toString();
+      const response1= await axios.post(`${API_URL}/api/questions/question`, {
+        username: user?.username ,
+      });
 
-        setShowError(false);
+      setCurrentQuestion(response1.data.question)
+      setCurrentScore(response1.data.score)
+      setCurrentState(response1.data.currentState)
+
+      setButtonvalue("Submit Answer");
+      setShowError(false);
+      if(response.data.correct){
         setIsUpdating(true);
-        setTimeout(() => {
-          if (parseInt(nextQuestionIndex) < questions.length) {
-            updateUser(
-              newScore,
-              nextQuestionIndex,
-              user?.currentState || "start",
-              user?.startTime || currentD
-            );
-            setAnswer("");
-          } else {
-            if (user?.currentState === "ch0") {
-              setAnswer("");
-              updateUser(
-                newScore,
-                "0",
-                "choosebranch",
-                user?.startTime || currentD
-              );
-            } else if (
-              user?.currentState === "land" ||
-              user?.currentState === "space"
-            ) {
-              updateUser(newScore, "0", "merging", user?.startTime || currentD);
-            } else if (user?.currentState === "merge") {
-              updateUser(newScore, "0", "end", user?.startTime || currentD);
-              const endtime = new Date();
-              const starttime = new Date(user?.startTime ? user.startTime : 0);
-              const timeTakenInMilliseconds =
-                endtime.getTime() - starttime.getTime();
-              updateTimeTaken(timeTakenInMilliseconds);
-            }
-          }
-          setIsUpdating(false); // Reset the update state after updating
-        }, 2000);
-      } else {
+        setTimeout(()=>{
+          setIsUpdating(false)
+        },2000)
+        setAnswer("")
+      }else{
+      // if (response.data.correct) {
+      //   const newScore = (parseInt(user?.score || "0") + 1).toString();
+      //   const nextQuestionIndex = (
+      //     parseInt(user?.questionNo || "0") + 1
+      //   ).toString();
+
+        
+        // setTimeout(() => {
+        //   if (parseInt(nextQuestionIndex) < questions.length) {
+        //     updateUser(
+        //       newScore,
+        //       nextQuestionIndex,
+        //       user?.currentState || "start",
+        //       user?.startTime || currentD
+        //     );
+        //     setAnswer("");
+        //   } else {
+        //     if (user?.currentState === "ch0") {
+        //       setAnswer("");
+        //       updateUser(
+        //         newScore,
+        //         "0",
+        //         "choosebranch",
+        //         user?.startTime || currentD
+        //       );
+        //     } else if (
+        //       user?.currentState === "land" ||
+        //       user?.currentState === "space"
+        //     ) {
+        //       updateUser(newScore, "0", "merging", user?.startTime || currentD);
+        //     } else if (user?.currentState === "merge") {
+        //       updateUser(newScore, "0", "end", user?.startTime || currentD);
+        //       const endtime = new Date();
+        //       const starttime = new Date(user?.startTime ? user.startTime : 0);
+        //       const timeTakenInMilliseconds =
+        //         endtime.getTime() - starttime.getTime();
+        //       updateTimeTaken(timeTakenInMilliseconds);
+        //     }
+        //   }
+        //   setIsUpdating(false); // Reset the update state after updating
+        // }, 2000);
+      // } else {
         setShowError(true);
         setHint(response.data.hint);
       }
-    } catch (error) {
+      }
+     catch (error) {
       console.error("Error checking answer:", error);
       setShowError(true);
     }
   };
 
-  const handleSelection = (branch: GameState) => {
-    updateUser(
-      `${user?.score || "0"}`,
-      "0",
-      branch,
-      user?.startTime || currentD
-    );
+  const handleSelection = async (branch: GameState) => {
+    const response = await axios.post(`${API_URL}/api/questions/branch`, {
+      username: user?.username ,
+      branch: branch,
+    });
+    setCurrentState(response.data)
+    const response1= await axios.post(`${API_URL}/api/questions/question`, {
+      username: user?.username ,
+    });
+    setCurrentQuestion(response1.data.question)
+    setCurrentScore(response1.data.score)
   };
 
   const renderContent = () => {
-    // Show "Congrats" screen when updating
+   
     if (isUpdating) {
       return (
         <div className="flex flex-col justify-center items-center">
@@ -257,15 +284,15 @@ const Chapter1: React.FC = () => {
             </CardHeader>
             <CardContent>
               <p className="text-center text-xl font-bold">
-                Current score: {parseInt(user?.score ? user.score : "0") + 1}
+                Current score: {parseInt(score?score:"0")}
               </p>
             </CardContent>
           </Card>
         </div>
       );
     }
-
-    switch (user?.currentState) {
+    console.log(currentState)
+    switch (currentState) {
       case "start":
         return (
           <div className="flex justify-center items-center">
@@ -326,7 +353,7 @@ const Chapter1: React.FC = () => {
                   }`}
                 />
                 {currentQuestion?.questionID === "5" &&
-                  user.currentState === "ch0" && (
+                  currentState === "ch0" && (
                     <div className="text-white">32A53R44J32F</div>
                   )}
                 {showError && (
@@ -339,7 +366,7 @@ const Chapter1: React.FC = () => {
                 )}
               </CardContent>
               <CardFooter className="flex justify-between">
-                <div className="font-semibold">Score: {user.score}</div>
+                <div className="font-semibold">Score: {score}</div>
                 <Button onClick={checkAnswer}>{Buttonvalue}</Button>
               </CardFooter>
             </Card>
@@ -430,7 +457,7 @@ const Chapter1: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-center text-xl font-bold">
-                  Your final score: {user.score}
+                  Your final score: {score}
                 </p>
                 <p className="text-center mt-4">Thank you for playing!</p>
               </CardContent>
@@ -455,8 +482,8 @@ const Chapter1: React.FC = () => {
     <div
       className="min-h-screen flex items-center justify-center"
       style={{
-        backgroundImage: user?.currentState
-          ? backgroundImages[user?.currentState as BackgroundState]
+        backgroundImage: currentState
+          ? backgroundImages[currentState as BackgroundState]
           : backgroundImages["start"],
         backgroundSize: "cover",
         backgroundPosition: "center",
