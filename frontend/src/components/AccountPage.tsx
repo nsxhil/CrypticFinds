@@ -10,6 +10,7 @@ interface Profile{
   username : string
   email: string
   phoneNumber: string
+  verified:string
 
 }
 
@@ -17,7 +18,9 @@ export default function AccountPage() {
   // In a real application, you would fetch this data from an API or context
     var profile: Profile;
     const temp: string = localStorage.getItem('user') || ''
-    profile = {username: 'not found', score: '0', email: 'not found', phoneNumber: 'not found', currentState: 'error', questionNo: '0',}
+    profile = {username: 'not found', score: '0', email: 'not found', phoneNumber: 'not found', currentState: 'error', questionNo: '0',
+      verified: 'false'
+    }
     if(profile){
     profile = JSON.parse(temp)
     }
@@ -46,6 +49,10 @@ export default function AccountPage() {
           <div className="flex items-center space-x-2">
             <Trophy className="w-5 h-5 text-yellow-500" />
             <span>High Score: {profile.score}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Trophy className="w-5 h-5 text-yellow-500" />
+            <span>Verified:  {profile.verified}</span>
           </div>
           <div className="flex items-center space-x-2">
             <Scroll className="w-5 h-5 text-red-600" />

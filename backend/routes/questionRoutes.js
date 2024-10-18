@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {Question, branch1, chapterqs, landq} = require('../models/Questions');
 const User = require('../models/User');
-
-
+const auth = require('../middleware/auth')
 
 
 // Route to fetch all questions
@@ -195,25 +194,35 @@ router.post('/checkans', async (req, res) => {
   }
 });
 
-router.post('/startGame', async (req, res) => {
+router.post('/startGame', auth ,  async (req, res) => {
   const currentDateTime = new Date();
     const {username} = req.body;
     // const { questionId, userAnswer, gameState } = req.body;
     let question;
-    const user = await User.findOne({ username });   
+    const user = await User.findById(req.user.id);
+    // const user = await User.findOne({ username });  
+    if(user.currentState==='start'){ 
     user.currentState="ch0";
-    user.startTime=currentDateTime;
-    await user.save()    
-});
-router.post('/branch', async (req, res) => {
-    const {username,branch} = req.body;
-    // const { questionId, userAnswer, gameState } = req.body;
-    let question;
-    const user = await User.findOne({ username });   
-    user.currentState=branch;
-    await user.save()    
+    await user.save() }
+    // user.startTime=currentDateTime;
+       
     res.json(user.currentState)
 });
+
+router.post('/branch', auth, async (req, res) => {      
+    try{      const {branch} = req.body;
+      const user = await User.findById(req.user.id);
+      let question;
+      // const user = await User.findOne({ username });   
+
+      user.currentState=branch;
+      await user.save()    
+      res.json(user.currentState)}
+catch(err){
+  res.status(500).json({message: 'error branching'});
+  console.error(err.message);
+}});
+
 router.post('/getState', async (req, res) => {
   const {username} = req.body;
   // const { questionId, userAnswer, gameState } = req.body;
@@ -242,7 +251,7 @@ router.post('/updateendtime', async (req, res) => {
   }
   // console.log("made it ot here")
   const currTime = new Date();
-  const startTime = process.env.STARTTIME;
+  const startTime = process.env.STARTTIME | '2024-10-18T00:00:00Z' ;
   // console.log(startTime, currTime)
   const start = new Date(startTime)
   if (!start || isNaN(start)) {

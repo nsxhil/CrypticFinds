@@ -35,7 +35,7 @@ router.post('/signup', async (req, res) => {
             phoneNumber,
             password,
             score: "0",
-            questionNo: "0",
+            questionNo: "1",
             currentState: "start",
             startTime: null,
             timeTaken: 0,

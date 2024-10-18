@@ -177,19 +177,22 @@ const Chapter1: React.FC = () => {
 
 
   const startGame = async () => {
-
-    await axios.post(`${API_URL}/api/questions/startGame`, {
+    const token = localStorage.getItem("token")
+    const resp = await axios.post(`${API_URL}/api/questions/startGame`, {
       username: user?.username ,
-    });
-      const formattedTime = "00:00:00";
-      setElapsedTime(formattedTime);
+    }, { headers: {
+      Authorization: `Bearer ${token}`,
+    },
 
+    });
+
+    setCurrentState(resp.data)
      const response= await axios.post(`${API_URL}/api/questions/question`, {
         username: user?.username ,
       });
       setCurrentQuestion(response.data.question)
       setCurrentScore(response.data.score)
-      setCurrentState(response.data.currentState)
+      
   };
 
   const checkAnswer = async () => {
@@ -271,6 +274,7 @@ const Chapter1: React.FC = () => {
   };
 
   const handleSelection = async (branch: GameState) => {
+    
     const response = await axios.post(`${API_URL}/api/questions/branch`, {
       username: user?.username ,
       branch: branch,
@@ -304,7 +308,7 @@ const Chapter1: React.FC = () => {
         </div>
       );
     }
-    console.log(currentState)
+    // console.log(currentState)
     switch (currentState) {
       case "start":
         return (

@@ -34,6 +34,7 @@ const Leaderboard: React.FC = () => {
   useEffect(() => {
     const fetchuser = async () => {
       const leaderboarddata = await axios.get(`${API_URL}/api/auth/getalluser`);
+      console.log(leaderboarddata);
       setLeaderboard(leaderboarddata.data);
     };
     fetchuser();
