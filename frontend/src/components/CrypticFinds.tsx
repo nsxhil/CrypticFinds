@@ -16,8 +16,8 @@ import TypeWriter from "./ui/TypeWriter";
 import TypeWriterNormal from "./ui/TypeWriternormal";
 import TypeWriterBottom from "./ui/TypeWriterBottom";
 // import axios from "axios";
+  // const gameStartTime = new Date('2024-10-18T17:40:00Z');
   const gameStartTime = new Date('2024-10-18T18:30:00Z');
-  // const gameStartTime = new Date('2024-10-18T18:30:00Z');
 
   // const API_URL = import.meta.env.VITE_API_URL;
 
