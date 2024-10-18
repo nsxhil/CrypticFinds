@@ -184,9 +184,9 @@ router.post('/checkans',auth, async (req, res) => {
 
         }
 
-
-        if(user.score > '23'){
-          const currtime = new Date()
+        
+        if(parseInt(user.score) > 23){
+          const currtime = new Date();
           user.timeTaken = currtime;
         }
 
@@ -311,5 +311,6 @@ router.post('/merging',auth,  async (req, res) => {
 // })
 
 module.exports = router;
+
 
 
