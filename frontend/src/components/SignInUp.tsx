@@ -121,7 +121,7 @@ const SignInUp: React.FC<SignInUpProps> = ({ mode }) => {
               variant="link"
               onClick={() => {
                 setIsSignIn(!isSignIn);
-                navigate(isSignIn ? "/signup" : "/signin");
+                navigate(isSignIn ? "/signin" : "/signup");
               }}
               className="text-indigo-400 hover:text-indigo-500"
             >

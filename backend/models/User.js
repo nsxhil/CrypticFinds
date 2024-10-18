@@ -8,7 +8,7 @@ const UserSchema = new mongoose.Schema({
     phoneNumber: { type: String, required: true },
     password: { type: String, required: true },
     score: { type: String, default: "0" },
-    questionNo: { type: String, default: "0" },
+    questionNo: { type: String, default: "1" },
     currentState: { type: String, default: "start" },
     startTime: { type: Date },
     timeTaken: { type: Number, default: 0 },
