@@ -183,6 +183,13 @@ router.post('/checkans',auth, async (req, res) => {
           }
 
         }
+
+
+        if(user.score > '23'){
+          const currtime = new Date()
+          user.timeTaken = currtime;
+        }
+
         await user.save()
 
 
@@ -240,6 +247,8 @@ catch(err){
   console.error(err.message);
 }});
 
+
+
 router.post('/getState', async (req, res) => {
   const {username} = req.body;
   // const { questionId, userAnswer, gameState } = req.body;
@@ -259,33 +268,47 @@ router.post('/merging',auth,  async (req, res) => {
   res.json({question:user.questionNo,score:user.score,currentState:user.currentState})
 });
 
-router.post('/updateendtime',auth, async (req, res) => {
-    // console.log('in updatetime')
-  // const {username} = req.body;
-  const user = await User.findById(req.user.id);
+// router.post('/updateendtime',auth, async (req, res) => {
+//     // console.log('in updatetime')
+//   // const {username} = req.body;
+//   const user = await User.findById(req.user.id);
 
-  if (!user) {
-    return res.status(404).json({ message: 'User not found' });
-    }
-  if(user.currentState != 'end'){
-    res.status(404).json({message: 'you should not have been here' });
-  }
-  console.log(process.env.STARTTIME);
-  const currTime = new Date();
-  const starttime = process.env.STARTTIME || '2024-10-18T00:00:00Z' ;
-  // console.log(startTime, currTime)
-  const start = new Date(starttime);
-  console.log(start);
-  if (!start || isNaN(start)) {
-    return res.status(500).json({ message: 'Invalid or missing start time from environment variables' });
-  };
-  ttmillis = (currTime.getTime() - start.getTime());
-  user.timeTaken = ttmillis;
-  await user.save()
-  console.log(ttmillis, start, currTime, user?.timeTaken)
-  res.status(200).json({message: 'endtime updated successfully'})
-  // console.log("hogya")
-})
+//   if (!user) {
+//     return res.status(404).json({ message: 'User not found' });
+//     }
+//   if(user.currentState != 'end'){
+//     res.status(404).json({message: 'you should not have been here' });
+//   }
+//   console.log(process.env.STARTTIME);
+//   const currTime = new Date();
+//   const starttime = process.env.STARTTIME || '2024-10-18T00:00:00Z' ;
+//   // console.log(startTime, currTime)
+//   const start = new Date(starttime);
+//   console.log(start);
+//   if (!start || isNaN(start)) {
+//     return res.status(500).json({ message: 'Invalid or missing start time from environment variables' });
+//   };
+//   ttmillis = (currTime.getTime() - start.getTime());
+//   user.timeTaken = ttmillis;
+//   await user.save()
+//   console.log(ttmillis, start, currTime, user?.timeTaken)
+//   res.status(200).json({message: 'endtime updated successfully'})
+//   // console.log("hogya")
+// })
+
+// router.post('/updateendtime',auth, async (req, res) => {
+//     const user = await User.findById(req.user.id);
+//        if (!user) {
+//           return res.status(404).json({ message: 'User not found' });
+//           }
+//       if(user.currentState != 'end'){
+//     res.status(404).json({message: 'you should not have been here' });
+//     const currTime = new Date();
+//     user.timeTaken = currTime;
+//     await user.save()
+//     res.status(200).json({message: 'recorded successfully'})
+//   }
+// })
 
 module.exports = router;
 

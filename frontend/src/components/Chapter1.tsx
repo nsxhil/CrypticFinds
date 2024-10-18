@@ -119,18 +119,18 @@ const Chapter1: React.FC = () => {
     fetchquestion();
   },[isUpdating])
 
-  useEffect(() => {
-    if(currentState==='end'){
-      const token = localStorage.getItem("token");
-    const setEndTime = async() => {
-      const response= await axios.post(`${API_URL}/api/questions/updateendtime`, {
-        username: user?.username ,
-      }, {headers: {Authorization: `Bearer ${token}`}});
-      response?console.log(response.data):"";
-    }
-    setEndTime()
-  }
-  },[currentState])
+  // useEffect(() => {
+  //   if(currentState==='end'){
+  //     const token = localStorage.getItem("token");
+  //   const setEndTime = async() => {
+  //     const response= await axios.post(`${API_URL}/api/questions/updateendtime`, {
+  //       username: user?.username ,
+  //     }, {headers: {Authorization: `Bearer ${token}`}});
+  //     response?console.log(response.data):"";
+  //   }
+  //   setEndTime()
+  // }
+  // },[currentState])
 
   useEffect(()=>{
     if(currentState==="merging"){

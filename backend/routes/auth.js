@@ -25,7 +25,7 @@ router.post('/signup', async (req, res) => {
             console.log('User already exists:', user);
             return res.status(400).json({ message: 'Username or email already exists' });
         }
-
+        
         const verificationToken = crypto.randomBytes(20).toString('hex');
         const verificationTokenExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
 
@@ -37,7 +37,7 @@ router.post('/signup', async (req, res) => {
             score: "0",
             questionNo: "1",
             currentState: "start",
-            startTime: null,
+            startTime: '2024-10-18T18:30:00.000Z',
             timeTaken: 0,
             isVerified: false,
             verificationToken,
@@ -349,37 +349,38 @@ router.get('/user', auth, async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
-cron.schedule('* * * * * *', async () => {
-    const updateAllowedTime = new Date("2024-10-17T23:45:00"); // Set the date from when updates should start
-    const currentDateTime = new Date();
-    const endTime = new Date(); // End time is the current time when the cron job runs
+// cron.schedule('* * * * * *', async () => {
+//     const updateAllowedTime = new Date("2024-10-17T23:45:00"); // Set the date from when updates should start
+//     const currentDateTime = new Date();
+//     const endTime = new Date(); // End time is the current time when the cron job runs
 
-    if (currentDateTime.getTime() >= updateAllowedTime.getTime()) {
-        try {
-            // Find all users with timeTaken = 0
-            const users = await User.find({ timeTaken: 0 });
+//     if (currentDateTime.getTime() >= updateAllowedTime.getTime()) {
+//         try {
+//             // Find all users with timeTaken = 0
+//             const users = await User.find({ timeTaken: 0 });
 
-            for (let user of users) {
-                if (user.startTime) {
-                    const startTime = new Date(user.startTime);
+//             for (let user of users) {
+//                 if (user.startTime) {
+//                     const startTime = new Date(user.startTime);
                     
-                    // Calculate the time taken in milliseconds
-                    const timeTakenMilliseconds = updateAllowedTime.getTime() - startTime.getTime();
+//                     // Calculate the time taken in milliseconds
+//                     const timeTakenMilliseconds = updateAllowedTime.getTime() - startTime.getTime();
 
-                    // Convert to hours:minutes:se
+//                     // Convert to hours:minutes:se
                     
-                    // Update user's timeTaken
-                    user.timeTaken = timeTakenMilliseconds;
+//                     // Update user's timeTaken
+//                     user.timeTaken = timeTakenMilliseconds;
 
-                    // Save the updated user
-                    await user.save();
-                    console.log(`Updated timeTaken for user: ${user.username}`);
-                }
-            }
-        } catch (error) {
-            console.error('Error updating timeTaken for users:', error);
-        }
-    }
-});
+//                     // Save the updated user
+//                     await user.save();
+//                     console.log(`Updated timeTaken for user: ${user.username}`);
+//                 }
+//             }
+//         } catch (error) {
+//             console.error('Error updating timeTaken for users:', error);
+//         }
+//     }
+
+// });
 
 module.exports = router;

@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
     questionNo: { type: String, default: "1" },
     currentState: { type: String, default: "start" },
     startTime: { type: Date },
-    timeTaken: { type: Number, default: 1 },
+    timeTaken: { type: Date},
     resetPasswordToken: String,
     resetPasswordExpires: Date,
     isVerified: { type: Boolean, default: false },
