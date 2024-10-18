@@ -200,6 +200,9 @@ router.post('/startGame', auth ,  async (req, res) => {
     // const { questionId, userAnswer, gameState } = req.body;
     let question;
     const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found in start' });
+      }
     // const user = await User.findOne({ username });  
     if(user.currentState==='start'){ 
     user.currentState="ch0";
@@ -210,8 +213,12 @@ router.post('/startGame', auth ,  async (req, res) => {
 });
 
 router.post('/branch', auth, async (req, res) => {      
-    try{      const {branch} = req.body;
+    try{
+      const {branch} = req.body;
       const user = await User.findById(req.user.id);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found in branch' });
+        }
       let question;
       // const user = await User.findOne({ username });   
 
@@ -229,19 +236,23 @@ router.post('/getState', async (req, res) => {
   const user = await User.findOne({ username });   
   res.json(user.currentState)
 });
-router.post('/merging', async (req, res) => {
+router.post('/merging',auth,  async (req, res) => {
   const {username} = req.body;
   // const { questionId, userAnswer, gameState } = req.body;
-  const user = await User.findOne({ username }); 
+  const user = await User.findById(req.user.id);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+    }
+  // const user = await User.findOne({ username }); 
   user.currentState="merge"
   await user.save()
   res.json({question:user.questionNo,score:user.score,currentState:user.currentState})
 });
 
-router.post('/updateendtime', async (req, res) => {
+router.post('/updateendtime',auth, async (req, res) => {
     // console.log('in updatetime')
   const {username} = req.body;
-  const user = await User.findOne({ username});
+  const user = await User.findById(req.user.id);
 
   if (!user) {
     return res.status(404).json({ message: 'User not found' });

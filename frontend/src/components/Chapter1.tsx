@@ -130,11 +130,12 @@ const Chapter1: React.FC = () => {
 
   useEffect(()=>{
     if(currentState==="merging"){
+      const token = localStorage.getItem('token');
       setTimeout(()=>{
         const fetchquestion= async()=>{
           const response= await axios.post(`${API_URL}/api/questions/merging`, {
             username: user?.username ,
-          });
+          }, {headers:{Authorization: `Bearer ${token}`}});
           setCurrentQuestion(response.data.question)
           setCurrentScore(response.data.score)
           setCurrentState(response.data.currentState)
@@ -274,11 +275,11 @@ const Chapter1: React.FC = () => {
   };
 
   const handleSelection = async (branch: GameState) => {
-    
+    const token = localStorage.getItem("token")
     const response = await axios.post(`${API_URL}/api/questions/branch`, {
       username: user?.username ,
       branch: branch,
-    });
+    }, {headers: { Authorization: `Bearer ${token}`}});
     setCurrentState(response.data)
     const response1= await axios.post(`${API_URL}/api/questions/question`, {
       username: user?.username ,
@@ -288,7 +289,6 @@ const Chapter1: React.FC = () => {
   };
 
   const renderContent = () => {
-   
     if (isUpdating) {
       return (
         <div className="flex flex-col justify-center items-center">
@@ -307,7 +307,7 @@ const Chapter1: React.FC = () => {
           </Card>
         </div>
       );
-    }
+    } 
     // console.log(currentState)
     switch (currentState) {
       case "start":
