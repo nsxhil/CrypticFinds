@@ -43,7 +43,7 @@ const Leaderboard: React.FC = () => {
 
   // Function to convert milliseconds to "HH:MM:SS"
   const formatTime = (milliseconds: number) => {
-    if (milliseconds === 0) {
+    if (milliseconds <= 0) {
       return "Not Completed";
     }
     const hours = Math.floor(milliseconds / (1000 * 60 * 60));

@@ -17,6 +17,7 @@ import Navbar from "./ui/Navbar";
 import BranchOption from "./ui/BranchOption";
 import { Link } from "react-router-dom";
 
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 type GameState =
@@ -70,11 +71,13 @@ const Chapter1: React.FC = () => {
       : "text-gray-100";
 
   // Fetch questions on initial load
- 
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     // Timer for elapsed time
-    const starttime = user?.startTime ? new Date(user.startTime) : new Date();
+    // const starttime = user?.startTime ? new Date(user.startTime) : new Date();
+    const start =  '2024-10-18T18:30:00Z';
+    const starttime = new Date(start);
 
     const updateElapsedTime = () => {
       const now = new Date();
@@ -108,7 +111,7 @@ const Chapter1: React.FC = () => {
     const fetchquestion= async()=>{
       const response= await axios.post(`${API_URL}/api/questions/question`, {
         username: user?.username ,
-      });
+      },{headers: {Authorization: `Bearer ${token}`}});
       setCurrentQuestion(response.data.question)
       setCurrentScore(response.data.score)
       setCurrentState(response.data.currentState)
@@ -118,10 +121,11 @@ const Chapter1: React.FC = () => {
 
   useEffect(() => {
     if(currentState==='end'){
+      const token = localStorage.getItem("token");
     const setEndTime = async() => {
       const response= await axios.post(`${API_URL}/api/questions/updateendtime`, {
         username: user?.username ,
-      });
+      }, {headers: {Authorization: `Bearer ${token}`}});
       response?console.log(response.data):"";
     }
     setEndTime()
@@ -151,7 +155,7 @@ const Chapter1: React.FC = () => {
     const fetchquestion= async()=>{
       const response= await axios.post(`${API_URL}/api/questions/question`, {
         username: user?.username ,
-      });
+      },{headers: {Authorization: `Bearer ${token}`}});
       setCurrentQuestion(response.data.question)
       setCurrentScore(response.data.score)
       setCurrentState(response.data.currentState)
@@ -163,7 +167,7 @@ const Chapter1: React.FC = () => {
     const fetchquestion= async()=>{
       const response= await axios.post(`${API_URL}/api/questions/question`, {
         username: user?.username ,
-      });
+      },{headers: {Authorization: `Bearer ${token}`}});
       setCurrentQuestion(response.data.question)
       setCurrentScore(response.data.score)
       setCurrentState(response.data.currentState)
@@ -190,7 +194,7 @@ const Chapter1: React.FC = () => {
     setCurrentState(resp.data)
      const response= await axios.post(`${API_URL}/api/questions/question`, {
         username: user?.username ,
-      });
+      },{headers: {Authorization: `Bearer ${token}`}});
       setCurrentQuestion(response.data.question)
       setCurrentScore(response.data.score)
       
@@ -198,16 +202,16 @@ const Chapter1: React.FC = () => {
 
   const checkAnswer = async () => {
     setButtonvalue("Checking...");
-
+    const token = localStorage.getItem('token');
     try {
       const response = await axios.post(`${API_URL}/api/questions/checkans`, {
         username: user?.username ,
         userAnswer: answer,
-      });
+      }, {headers:{Authorization: `Bearer ${token}`}});
 
       const response1= await axios.post(`${API_URL}/api/questions/question`, {
         username: user?.username ,
-      });
+      },{headers: {Authorization: `Bearer ${token}`}});
 
       setCurrentQuestion(response1.data.question)
       setCurrentScore(response1.data.score)
@@ -283,7 +287,7 @@ const Chapter1: React.FC = () => {
     setCurrentState(response.data)
     const response1= await axios.post(`${API_URL}/api/questions/question`, {
       username: user?.username ,
-    });
+    },{headers: {Authorization: `Bearer ${token}`}});
     setCurrentQuestion(response1.data.question)
     setCurrentScore(response1.data.score)
   };

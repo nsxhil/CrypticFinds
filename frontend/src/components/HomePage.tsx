@@ -130,8 +130,8 @@ const HomePage: React.FC = () => {
           2. There is no time limit per question. <br />
           3. Any attempt to tamper with the game will lead to immediate
           disqualification. <br />
-          4. The event starts on 18th October, 00:00, and ends on 18th October,
-          23:59. <br />
+          4. The event starts on 19th October, 00:00, and ends on 19th October,
+          12:00. <br />
           5. At each level, you will be given a problem statement and some
           resources, either directly or indirectly. You must use these to find
           the answers and move ahead in the storyline. <br />
@@ -149,6 +149,7 @@ const HomePage: React.FC = () => {
           forbidden. <br />
           12. In case of any queries, feel free to reach out to us in the
           Cryptic Finds WhatsApp group.
+          13. Set your username as (delegateid_name) <br/>
         </h6>
 
         {/* Information Sections */}

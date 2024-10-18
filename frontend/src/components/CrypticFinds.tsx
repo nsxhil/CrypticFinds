@@ -16,8 +16,10 @@ import TypeWriter from "./ui/TypeWriter";
 import TypeWriterNormal from "./ui/TypeWriternormal";
 import TypeWriterBottom from "./ui/TypeWriterBottom";
 // import axios from "axios";
+  // const gameStartTime = new Date('2024-10-18T18:30:00Z');
+  const gameStartTime = new Date('2024-10-18T17:00:00Z');
 
-// const API_URL = import.meta.env.VITE_API_URL;
+  // const API_URL = import.meta.env.VITE_API_URL;
 
 // interface Question {
 //   id: number;
@@ -35,7 +37,15 @@ const CrypticFinds: React.FC = () => {
 
 
   const startGame = () => {
-    navigate("/chapter1");
+    const currTime = new Date();
+    if (currTime >= gameStartTime) {
+      navigate("/chapter1");
+    } else {
+      const startTimeStr = gameStartTime.toLocaleString();
+      alert(`The game starts at ${startTimeStr}. Please come back later!`);
+    }
+
+    // navigate("/chapter1");
   };
 
   // Add a delay before showing the buttons

@@ -45,7 +45,7 @@ const auth = require('../middleware/auth')
 //   }
 // });
 
-router.post('/question', async (req, res) => {
+router.post('/question',auth,  async (req, res) => {
   try {
     // Fetch the user based on the request (assuming a username or token is available in the request)
     const { username } = req.body; // Or extract from req.user if using authentication middleware
@@ -53,7 +53,9 @@ router.post('/question', async (req, res) => {
       return res.status(400).json({ message: 'Username is required' });
     }
 
-    const user = await User.findOne({ username });
+    // const user = await User.findOne({ username });
+    const user = await User.findById(req.user.id);
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -102,13 +104,15 @@ router.post('/question', async (req, res) => {
   }
 });
 
-router.post('/checkans', async (req, res) => {
+router.post('/checkans',auth, async (req, res) => {
   try {
     const {username, userAnswer} = req.body;
     // const { questionId, userAnswer, gameState } = req.body;
     let question;
 
-    const user = await User.findOne({ username });
+    // const user = await User.findOne({ username });
+    const user = await User.findById(req.user.id);
+
 
     
     switch (user.currentState) {
@@ -221,8 +225,14 @@ router.post('/branch', auth, async (req, res) => {
         }
       let question;
       // const user = await User.findOne({ username });   
+      if(user.score === '6'){      
+        user.currentState=branch;
 
-      user.currentState=branch;
+      }
+      else{
+        user.currentState='ch0';
+      }
+
       await user.save()    
       res.json(user.currentState)}
 catch(err){
@@ -251,7 +261,7 @@ router.post('/merging',auth,  async (req, res) => {
 
 router.post('/updateendtime',auth, async (req, res) => {
     // console.log('in updatetime')
-  const {username} = req.body;
+  // const {username} = req.body;
   const user = await User.findById(req.user.id);
 
   if (!user) {
@@ -260,11 +270,12 @@ router.post('/updateendtime',auth, async (req, res) => {
   if(user.currentState != 'end'){
     res.status(404).json({message: 'you should not have been here' });
   }
-  // console.log("made it ot here")
+  console.log(process.env.STARTTIME);
   const currTime = new Date();
-  const startTime = process.env.STARTTIME | '2024-10-18T00:00:00Z' ;
+  const starttime = process.env.STARTTIME || '2024-10-18T00:00:00Z' ;
   // console.log(startTime, currTime)
-  const start = new Date(startTime)
+  const start = new Date(starttime);
+  console.log(start);
   if (!start || isNaN(start)) {
     return res.status(500).json({ message: 'Invalid or missing start time from environment variables' });
   };
@@ -272,7 +283,7 @@ router.post('/updateendtime',auth, async (req, res) => {
   user.timeTaken = ttmillis;
   await user.save()
   console.log(ttmillis, start, currTime, user?.timeTaken)
-  // res.status(200).json({message: 'endtime updated successfully'})
+  res.status(200).json({message: 'endtime updated successfully'})
   // console.log("hogya")
 })
 
