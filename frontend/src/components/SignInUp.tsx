@@ -27,21 +27,29 @@ const SignInUp: React.FC<SignInUpProps> = ({ mode }) => {
   const [error, setError] = useState("");
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    let success;
+    let response;
+
     if (isSignIn) {
-      success = await signIn(username, password);
+      response = await signIn(username, password);
     } else {
-      success = await signUp(username, email, phoneNumber, password);
+      response = await signUp(username, email, phoneNumber, password);
     }
-    if (success) {
-      navigate("/"); // This will now redirect to the HomePage
+
+    // Check if the response is an object with a success property
+    if (typeof response === "object" && response.success) {
+      navigate("/"); // Redirect to the HomePage
+    } else if (typeof response === "boolean" && response) {
+      navigate("/"); // Redirect to the HomePage (if response is just a boolean)
     } else {
       setError(
-        isSignIn ? "Invalid credentials" : "Signup failed. Please try again."
+        typeof response === "object" && response.message
+          ? response.message
+          : isSignIn
+          ? "Invalid credentials or email not verified"
+          : "Signup failed. Please try again."
       );
     }
   };
