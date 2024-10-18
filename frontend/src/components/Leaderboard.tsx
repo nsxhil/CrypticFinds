@@ -54,7 +54,7 @@ const Leaderboard: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-screen bg-">
       <Card className={cn("max-w-md w-full ")}>
         <CardHeader>
           <CardTitle className="text-2xl">Global Leaderboard</CardTitle>

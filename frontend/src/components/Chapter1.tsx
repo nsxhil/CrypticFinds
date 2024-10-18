@@ -99,6 +99,7 @@ const Chapter1: React.FC = () => {
 
     return () => clearInterval(intervalId);
   }, [user?.startTime]);
+
   useEffect(()=>{
     setCurrentState(user?.currentState)
   },[])
@@ -114,6 +115,18 @@ const Chapter1: React.FC = () => {
     }
     fetchquestion();
   },[isUpdating])
+
+  useEffect(() => {
+    if(currentState==='end'){
+    const setEndTime = async() => {
+      const response= await axios.post(`${API_URL}/api/questions/updateendtime`, {
+        username: user?.username ,
+      });
+      response?console.log(response.data):"";
+    }
+    setEndTime()
+  }
+  },[currentState])
 
   useEffect(()=>{
     if(currentState==="merging"){

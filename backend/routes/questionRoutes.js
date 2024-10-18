@@ -229,4 +229,33 @@ router.post('/merging', async (req, res) => {
   res.json({question:user.questionNo,score:user.score,currentState:user.currentState})
 });
 
+router.post('/updateendtime', async (req, res) => {
+    // console.log('in updatetime')
+  const {username} = req.body;
+  const user = await User.findOne({ username});
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+    }
+  if(user.currentState != 'end'){
+    res.status(404).json({message: 'you should not have been here' });
+  }
+  // console.log("made it ot here")
+  const currTime = new Date();
+  const startTime = process.env.STARTTIME;
+  // console.log(startTime, currTime)
+  const start = new Date(startTime)
+  if (!start || isNaN(start)) {
+    return res.status(500).json({ message: 'Invalid or missing start time from environment variables' });
+  };
+  ttmillis = (currTime.getTime() - start.getTime());
+  user.timeTaken = ttmillis;
+  await user.save()
+  console.log(ttmillis, start, currTime, user?.timeTaken)
+  // res.status(200).json({message: 'endtime updated successfully'})
+  // console.log("hogya")
+})
+
 module.exports = router;
+
+
