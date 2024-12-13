@@ -138,7 +138,7 @@ const Chapter1: React.FC = () => {
       setTimeout(()=>{
         const fetchquestion= async()=>{
           const response= await axios.post(`${API_URL}/api/questions/merging`, {
-            username: user?.username ,
+            // username: user?.username ,
           }, {headers:{Authorization: `Bearer ${token}`}});
           setCurrentQuestion(response.data.question)
           setCurrentScore(response.data.score)
@@ -154,7 +154,7 @@ const Chapter1: React.FC = () => {
   else if (currentState==="merge"){
     const fetchquestion= async()=>{
       const response= await axios.post(`${API_URL}/api/questions/question`, {
-        username: user?.username ,
+        // username: user?.username ,
       },{headers: {Authorization: `Bearer ${token}`}});
       setCurrentQuestion(response.data.question)
       setCurrentScore(response.data.score)
@@ -166,7 +166,7 @@ const Chapter1: React.FC = () => {
   else if (currentState==="end"){
     const fetchquestion= async()=>{
       const response= await axios.post(`${API_URL}/api/questions/question`, {
-        username: user?.username ,
+        // username: user?.username ,
       },{headers: {Authorization: `Bearer ${token}`}});
       setCurrentQuestion(response.data.question)
       setCurrentScore(response.data.score)
@@ -184,7 +184,7 @@ const Chapter1: React.FC = () => {
   const startGame = async () => {
     const token = localStorage.getItem("token")
     const resp = await axios.post(`${API_URL}/api/questions/startGame`, {
-      username: user?.username ,
+      // username: user?.username ,
     }, { headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -193,7 +193,7 @@ const Chapter1: React.FC = () => {
 
     setCurrentState(resp.data)
      const response= await axios.post(`${API_URL}/api/questions/question`, {
-        username: user?.username ,
+        // username: user?.username ,
       },{headers: {Authorization: `Bearer ${token}`}});
       setCurrentQuestion(response.data.question)
       setCurrentScore(response.data.score)
@@ -205,12 +205,12 @@ const Chapter1: React.FC = () => {
     const token = localStorage.getItem('token');
     try {
       const response = await axios.post(`${API_URL}/api/questions/checkans`, {
-        username: user?.username ,
+        // username: user?.username ,
         userAnswer: answer,
       }, {headers:{Authorization: `Bearer ${token}`}});
 
       const response1= await axios.post(`${API_URL}/api/questions/question`, {
-        username: user?.username ,
+        // username: user?.username ,
       },{headers: {Authorization: `Bearer ${token}`}});
 
       setCurrentQuestion(response1.data.question)

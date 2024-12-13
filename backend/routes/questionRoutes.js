@@ -48,10 +48,10 @@ const auth = require('../middleware/auth')
 router.post('/question',auth,  async (req, res) => {
   try {
     // Fetch the user based on the request (assuming a username or token is available in the request)
-    const { username } = req.body; // Or extract from req.user if using authentication middleware
-    if (!username) {
-      return res.status(400).json({ message: 'Username is required' });
-    }
+    // const { username } = req.body; // Or extract from req.user if using authentication middleware
+    // if (!username) {
+    //   return res.status(400).json({ message: 'Username is required' });
+    // }
 
     // const user = await User.findOne({ username });
     const user = await User.findById(req.user.id);
@@ -106,8 +106,8 @@ router.post('/question',auth,  async (req, res) => {
 
 router.post('/checkans',auth, async (req, res) => {
   try {
-    const {username, userAnswer} = req.body;
-    // const { questionId, userAnswer, gameState } = req.body;
+    // const {username, userAnswer} = req.body;
+    const { userAnswer} = req.body;
     let question;
 
     // const user = await User.findOne({ username });
@@ -206,10 +206,10 @@ router.post('/checkans',auth, async (req, res) => {
 });
 
 router.post('/startGame', auth ,  async (req, res) => {
-  const currentDateTime = new Date();
-    const {username} = req.body;
+  // const currentDateTime = new Date();
+    // const {username} = req.body;
     // const { questionId, userAnswer, gameState } = req.body;
-    let question;
+    // let question;
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: 'User not found in start' });
@@ -255,8 +255,9 @@ router.post('/getState', async (req, res) => {
   const user = await User.findOne({ username });   
   res.json(user.currentState)
 });
+
 router.post('/merging',auth,  async (req, res) => {
-  const {username} = req.body;
+  // const {username} = req.body;
   // const { questionId, userAnswer, gameState } = req.body;
   const user = await User.findById(req.user.id);
   if (!user) {

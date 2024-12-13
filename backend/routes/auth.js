@@ -138,7 +138,7 @@ router.get('/getalluser', async (req, res) => {
             {
                 $project: {
                     username: 1,
-                    score: { $toInt: "$score" }, // Convert the score field to an integer
+                    score: { $toInt: "$score" },
                     timeTaken: 1
                 }
             },
